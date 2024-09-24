@@ -1,0 +1,51 @@
+.cafe-detail-container {
+    width: 390px;
+    margin: 0 auto;
+    background-color: #fff;
+    font-family: 'Cafe24 Dongdong';
+  }
+  
+  .back-button {
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 16px;
+    left: 15px;
+  }
+  
+  .cafe-header {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .cafe-name {
+    font-size: 24px;
+  }
+  
+  .cafe-rating {
+    font-size: 18px;
+    color: #878787;
+  }
+  
+  .cafe-tabs {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    border-bottom: 1px solid #674D42;
+  }
+  
+  .cafe-tabs span {
+    font-size: 18px;
+    cursor: pointer;
+    padding-bottom: 5px;
+  }
+  
+  .cafe-tabs .selected {
+    color: #674D42;
+    border-bottom: 2px solid #674D42;
+  }
+  
+  .cafe-content {
+    padding: 10px;
+  }
+  
