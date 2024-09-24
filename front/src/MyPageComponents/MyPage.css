@@ -1,0 +1,229 @@
+/* 마이페이지 */
+.mypage-container {
+    position: relative;
+    width: 390px;
+    height: 844px;
+    margin: 0 auto;
+    background: #ffffff;
+    font-family: 'Cafe24 Dongdong'
+}
+
+/* Cafe ChuChu 로고 */
+.logo {
+    position: absolute;
+    top: 16px;
+    left: 15px;
+    width: 52.51px;
+    height: 22.34px;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* 프로필 사진 (동그라미) */
+.profile-picture {
+    position: absolute;
+    left: 125px;
+    top: 69px;
+    width: 140px;
+    height: 140px;
+    background: url(../assets/images/cafe_chuchu_profile.png) no-repeat center center;
+    background-size: cover;
+    border-radius: 50%;
+    border: 1px solid #674D42;
+    cursor: pointer;
+}
+
+/* 내 리스트 아이콘 */
+.mylist-icon {
+    position: absolute;
+    left: 54px;
+    top: 413px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.mylist-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+/* 찜 목록 아이콘 */
+.wishlist-icon {
+    position: absolute;
+    left: 172px;
+    top: 413px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.wishlist-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+/* 방문 기록 아이콘 */
+.visit-history-icon {
+    position: absolute;
+    left: 287px;
+    top: 413px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.visit-history-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+/* 닉네임 */
+.nickname {
+    position: absolute;
+    left: 164px;
+    top: 224px;
+    font-family: 'Cafe24 Dongdong';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 31px;
+    text-align: center;
+    color: #000000;
+}
+
+/* 내 프로필 > */
+.profile-link {
+    position: absolute;
+    left: 162px;
+    top: 260px;
+    font-family: 'Cafe24 Dongdong';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+    color: #7D7D7D;
+    cursor: pointer;
+}
+
+/* 내 적립금 */
+.points {
+    position: absolute;
+    left: 41px;
+    top: 338px;
+    font-family: 'Cafe24 Dongdong';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    color: #000000;
+}
+
+/* 원 */
+.points-value {
+    position: absolute;
+    left: 198px;
+    top: 338px;
+    font-family: 'Cafe24 Dongdong';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    color: #000000;
+}
+
+/* 내역 확인하기 > */
+.points-link {
+    position: absolute;
+    left: 267px;
+    top: 341px;
+    font-family: 'Cafe24 Dongdong';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+    color: #7D7D7D;
+    cursor: pointer;
+}
+
+/* 내 리스트 */
+.my-list {
+    position: absolute;
+    left: 43px;
+    top: 471px;
+    font-family: 'Cafe24 Dongdong';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    color: #000000;
+    cursor: pointer;
+}
+
+/* 찜 목록 */
+.wishlist {
+    position: absolute;
+    left: 170px;
+    top: 471px;
+    font-family: 'Cafe24 Dongdong';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    color: #000000;
+    cursor: pointer;
+}
+
+/* 방문 기록 */
+.visit-history {
+    position: absolute;
+    left: 276px;
+    top: 471px;
+    font-family: 'Cafe24 Dongdong';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    color: #000000;
+    cursor: pointer;
+}
+
+/* 가로선 */
+.line {
+    position: absolute;
+    height: 1px;
+    width: 344px;
+    background-color: #674D42;
+    border: none;
+    left: calc(50% - 172px);
+}
+
+.line1 {
+    top: 36.97%;
+}
+
+.line2 {
+    top: 46.33%;
+}
+
+.line3 {
+    top: 61.62%;
+}
+
+.divider-vertical {
+    position: absolute;
+    width: 1px;
+    height: 50px;
+    background-color: #CFCFCF;
+    top: 430px;
+}
+
+.divider1{
+    left: 140px;
+}
+
+.divider2{
+    left: 250px;
+}
