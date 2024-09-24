@@ -1,0 +1,41 @@
+.cafes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .cafe-card {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+  
+  .cafe-details {
+    flex-grow: 1;
+  }
+  
+  .cafe-name {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .cafe-info {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .cafe-distance {
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  
+  .like-icon {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+  }
+  
