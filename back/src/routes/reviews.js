@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Review = require('../models/Reviews');
+const Review = require('../models/Review');
 const auth = require('../middleware/auth');
 
 //리뷰 작성 (POST /reviews/:cafe_id)
@@ -72,7 +72,7 @@ router.put('/:review_id', auth, async (req, res, next) => {
 
 
 //리뷰 삭제 (DELETE /reviews/:review_id)
-outer.put('/:review_id', auth, async (req, res, next) => {
+router.put('/:review_id', auth, async (req, res, next) => {
     const review_id = req.params.review_id;
     const user_id = req.user._id;
 
