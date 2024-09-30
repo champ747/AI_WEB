@@ -40,20 +40,6 @@ const WishListPage = () => {
     }));
   };
 
-  const setDistanceWidth = (id, distanceText) => {
-    const distanceElement = document.getElementById(`distance-${id}`);
-    if (distanceElement) {
-      const textWidth = distanceElement.offsetWidth;  // 거리 텍스트의 너비 측정
-      distanceElement.style.setProperty('--distance-width', `${textWidth}px`);
-    }
-  };
-
-  useEffect(() => {
-    wishlist.forEach((cafe) => {
-      setDistanceWidth(cafe.id, cafe.distance);
-    });
-  }, [wishlist]);
-
   const goToHome = () => {
     navigate('/home');  // '/home' 경로로 이동
   };
@@ -90,7 +76,9 @@ const WishListPage = () => {
                 <div className="wishlist-info-rating">{cafe.rating.toFixed(1)}</div>
                 <div className="wishlist-info-review"> 리뷰 {cafe.reviews > 999 ? '999+' : cafe.reviews}개 </div>
               </div>
-              <div className="wishlist-info-status">{cafe.status}</div>
+              <div className={cafe.status === '영업 중' ? 'wishlist-info-status_open' : 'wishlist-info-status_close'}>
+                {cafe.status}
+              </div>
               <div className="wishlist_line1"></div>
               <div className="wishlist-info-location"> {cafe.location}</div>
             </div>
@@ -110,6 +98,6 @@ const WishListPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default WishListPage;
