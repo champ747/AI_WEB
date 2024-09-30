@@ -41,11 +41,11 @@ const WishListPage = () => {
   };
 
   const goToHome = () => {
-    navigate('/home');  // '/home' 경로로 이동
+    navigate('/home'); 
   };
 
   const goToMyPage = () => {
-    navigate('/mypage');  // '/mypage' 경로로 이동
+    navigate('/mypage'); 
   };
 
   return (
