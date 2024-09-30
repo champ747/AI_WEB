@@ -10,7 +10,7 @@ import moreIcon from '../assets/images/cafe_chuchu_more.png';
 import './WishListPage.css';
 
 const WishListPage = () => {
-  const navigate = useNavigate();  // useNavigate 훅 초기화
+  const navigate = useNavigate();  
   const [wishlist, setWishlist] = useState([]);
   const [likedItems, setLikedItems] = useState({});
 
@@ -45,7 +45,7 @@ const WishListPage = () => {
   };
 
   const goToMyPage = () => {
-    navigate('/mypage'); 
+    navigate('/mypage');  
   };
 
   return (
@@ -79,7 +79,7 @@ const WishListPage = () => {
               <div className={cafe.status === '영업 중' ? 'wishlist-info-status_open' : 'wishlist-info-status_close'}>
                 {cafe.status}
               </div>
-              <div className="wishlist_line1"></div>
+              <div className="wishlist_line"></div>
               <div className="wishlist-info-location"> {cafe.location}</div>
             </div>
 
