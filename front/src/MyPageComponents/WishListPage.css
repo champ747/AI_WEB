@@ -117,9 +117,17 @@
 }
 
 /* 카페 상태 및 위치 */
-.wishlist-info-status {
+.wishlist-info-status_open {
     font-size: 15px;
     color: #FF3B30;
+    position: absolute;
+    top: 62px;
+    left: 137px;
+}
+
+.wishlist-info-status_close {
+    font-size: 15px;
+    color: #000000;
     position: absolute;
     top: 62px;
     left: 137px;
