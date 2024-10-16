@@ -1,0 +1,638 @@
+import time
+import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import os
+
+# ChromeDriver 경로 설정
+chrome_driver_path = 'C:/chromedriver/chromedriver.exe'
+service = Service(chrome_driver_path)
+driver = webdriver.Chrome(service=service)
+
+# 크롤링할 URL (초기 페이지)
+initial_url = "https://map.naver.com/v5/search/"
+
+# 검색할 지역명 리스트
+area_names = [
+    "대구광역시 동인동 1가 카페", 
+    "대구광역시 동인동 2가 카페",
+    "대구광역시 동인동 3가 카페",
+    "대구광역시 동인동 4가 카페",
+    "대구광역시 삼덕동 1가 카페",
+    "대구광역시 삼덕동 2가 카페",
+    "대구광역시 삼덕동 3가 카페",
+    "대구광역시 성내1동 봉산동 카페",
+    "대구광역시 성내1동 동문동 카페",
+    "대구광역시 성내1동 문화동 카페",
+    "대구광역시 성내1동 공평동 카페",
+    "대구광역시 성내1동 동성로1가 카페",
+    "대구광역시 성내1동 동성로2가 카페",
+    "대구광역시 성내1동 동성로3가 카페",
+    "대구광역시 성내1동 교동 카페",
+    "대구광역시 성내1동 용덕동 카페",
+    "대구광역시 성내1동 상덕동 카페",
+    "대구광역시 성내1동 완전동 카페",
+    "대구광역시 성내1동 덕산동 카페",
+    "대구광역시 성내1동 사일동 카페",
+    "대구광역시 성내1동 남일동 카페",
+    "대구광역시 성내1동 포정동 카페",
+    "대구광역시 성내1동 태평로1가 카페",
+    "대구광역시 성내1동 화전동 카페",
+    "대구광역시 성내1동 북성로1가 카페",
+    "대구광역시 성내2동 동성로3가 카페",
+    "대구광역시 성내2동 덕산동 카페",
+    "대구광역시 성내2동 장관동 카페",
+    "대구광역시 성내2동 하서동 카페",
+    "대구광역시 성내2동 상서동 카페",
+    "대구광역시 성내2동 수동 카페",
+    "대구광역시 성내2동 남성로 카페",
+    "대구광역시 성내2동 계산동1가 카페",
+    "대구광역시 성내2동 계산동2가 카페",
+    "대구광역시 성내2동 종로1가 카페",
+    "대구광역시 성내2동 종로2가 카페",
+    "대구광역시 성내2동 남일동 카페",
+    "대구광역시 성내2동 동일동 카페",
+    "대구광역시 성내2동 전동 카페",
+    "대구광역시 성내2동 포정동 카페",
+    "대구광역시 성내2동 서문로1가 카페",
+    "대구광역시 성내2동 서내동 카페",
+    "대구광역시 성내2동 북내동 카페",
+    "대구광역시 성내2동 대안동 카페",
+    "대구광역시 성내2동 서성로1가 카페",
+    "대구광역시 성내2동 서성로2가 카페",
+    "대구광역시 성내2동 태평로2가 카페",
+    "대구광역시 성내2동 태평로3가 카페",
+    "대구광역시 성내2동 동산동 카페",
+    "대구광역시 성내2동 수창동 카페",
+    "대구광역시 성내2동 화전동 카페",
+    "대구광역시 성내2동 향촌동 카페",
+    "대구광역시 성내2동 북성로1가 카페",
+    "대구광역시 성내2동 북성로2가 카페",
+    "대구광역시 성내3동 서문로2가 카페",
+    "대구광역시 성내3동 인교동 카페",
+    "대구광역시 성내3동 서야동 카페",
+    "대구광역시 성내3동 서성로1가 카페",
+    "대구광역시 성내3동 태평로3가 카페",
+    "대구광역시 성내3동 동산동 카페",
+    "대구광역시 성내3동 시장북로 카페",
+    "대구광역시 성내3동 달성동 카페",
+    "대구광역시 성내3동 도원동 카페",
+    "대구광역시 성내3동 수창동 카페",
+    "대구광역시 중구 시장북로 카페",
+    "대구광역시 중구 대신동 카페",
+    "대구광역시 남산1동 카페",
+    "대구광역시 남산2동 카페",
+    "대구광역시 남산3동 카페",
+    "대구광역시 남산4동 카페",
+    "대구광역시 대봉1동 카페",
+    "대구광역시 대봉2동 카페",
+    "대구광역시 신암1동 카페",
+    "대구광역시 신암2동 카페",
+    "대구광역시 신암3동 카페",
+    "대구광역시 신암4동 카페",
+    "대구광역시 신암5동 카페",
+    "대구광역시 신천1동 카페",
+    "대구광역시 신천2동 카페",
+    "대구광역시 신천3동 카페",
+    "대구광역시 신천4동 카페",
+    "대구광역시 효목1동 카페",
+    "대구광역시 효목2동 카페",
+    "대구광역시 도평동 카페",
+    "대구광역시 평광동 카페",
+    "대구광역시 불로동 카페",
+    "대구광역시 봉무동 카페",
+    "대구광역시 지저동 카페",
+    "대구광역시 입석동 카페",
+    "대구광역시 지저동 카페",
+    "대구광역시 검사동 카페",
+    "대구광역시 방촌동 카페",
+    "대구광역시 둔산동 카페",
+    "대구광역시 부동 카페",
+    "대구광역시 신평동 카페",
+    "대구광역시 방촌동 카페",
+    "대구광역시 율하동 카페",
+    "대구광역시 신기동 카페",
+    "대구광역시 용계동 카페",
+    "대구광역시 율암동 카페",
+    "대구광역시 상매동 카페",
+    "대구광역시 매여동 카페",
+    "대구광역시 괴전동 카페",
+    "대구광역시 금강동 카페",
+    "대구광역시 대림동 카페",
+    "대구광역시 사복동 카페",
+    "대구광역시 숙천동 카페",
+    "대구광역시 동호동 카페",
+    "대구광역시 신서동 카페",
+    "대구광역시 서호동 카페",
+    "대구광역시 동호동 카페",
+    "대구광역시 신서동 카페",
+    "대구광역시 각산동 카페",
+    "대구광역시 동내동 카페",
+    "대구광역시 괴전동 카페",
+    "대구광역시 대림동 카페",
+    "대구광역시 사복동 카페",
+    "대구광역시 숙천동 카페",
+    "대구광역시 내곡동 카페",
+    "대구광역시 능성동 카페",
+    "대구광역시 진인동 카페",
+    "대구광역시 도학동 카페",
+    "대구광역시 백안동 카페",
+    "대구광역시 미곡동 카페",
+    "대구광역시 용수동 카페",
+    "대구광역시 신무동 카페",
+    "대구광역시 미대동 카페",
+    "대구광역시 내동 카페",
+    "대구광역시 지묘동 카페",
+    "대구광역시 덕곡동 카페",
+    "대구광역시 송정동 카페",
+    "대구광역시 신용동 카페",
+    "대구광역시 중대동 카페",
+    "대구광역시 내당1동 카페",
+    "대구광역시 내당2동 카페",
+    "대구광역시 내당3동 카페",
+    "대구광역시 내당4동 카페",
+    "대구광역시 비산1동 카페",
+    "대구광역시 비산2동 카페",
+    "대구광역시 비산3동 카페",
+    "대구광역시 비산4동 카페",
+    "대구광역시 비산5동 카페",
+    "대구광역시 비산6동 카페",
+    "대구광역시 비산7동 카페",
+    "대구광역시 평리1동 카페",
+    "대구광역시 평리2동 카페",
+    "대구광역시 평리3동 카페",
+    "대구광역시 평리4동 카페",
+    "대구광역시 평리5동 카페",
+    "대구광역시 평리6동 카페",
+    "대구광역시 상리동 카페",
+    "대구광역시 이현동 카페",
+    "대구광역시 중리동 카페",
+    "대구광역시 원대동1가 카페",
+    "대구광역시 원대동2가 카페",
+    "대구광역시 원대동3가 카페",
+    "대구광역시 이천동 카페",
+    "대구광역시 봉덕1동 카페",
+    "대구광역시 봉덕2동 카페",
+    "대구광역시 봉덕3동 카페",
+    "대구광역시 대명1동 카페",
+    "대구광역시 대명2동 카페",
+    "대구광역시 대명3동 카페",
+    "대구광역시 대명4동 카페",
+    "대구광역시 대명5동 카페",
+    "대구광역시 대명6동 카페",
+    "대구광역시 대명9동 카페",
+    "대구광역시 대명10동 카페",
+    "대구광역시 대명11동 카페",
+    "대구광역시 고성동1가 카페",
+    "대구광역시 고성동2가 카페",
+    "대구광역시 고성동3가 카페",
+    "대구광역시 칠성동1가 카페",
+    "대구광역시 칠성동2가 카페",
+    "대구광역시 침산1동 카페",
+    "대구광역시 침산2동 카페",
+    "대구광역시 침산3동 카페",
+    "대구광역시 대현동 카페",
+    "대구광역시 복현1동 카페",
+    "대구광역시 복현2동 카페",
+    "대구광역시 검단동 카페",
+    "대구광역시 동변동 카페",
+    "대구광역시 무태조야동 카페",
+    "대구광역시 서변동 카페",
+    "대구광역시 연경동 카페",
+    "대구광역시 조야동 카페",
+    "대구광역시 관문동 카페",
+    "대구광역시 사수동 카페",
+    "대구광역시 금호동 카페",
+    "대구광역시 팔달동 카페",
+    "대구광역시 매천동 카페",
+    "대구광역시 노곡동 카페",
+    "대구광역시 태전1동 카페",
+    "대구광역시 태전2동 카페",
+    "대구광역시 구암동 카페",
+    "대구광역시 관음동 카페",
+    "대구광역시 읍내동 카페",
+    "대구광역시 동천동 카페",
+    "대구광역시 노원동1가 카페",
+    "대구광역시 노원동2가 카페",
+    "대구광역시 노원동3가 카페",
+    "대구광역시 국우동 카페",
+    "대구광역시 학정동 카페",
+    "대구광역시 도남동 카페",
+    "대구광역시 동호동 카페",
+    "대구광역시 범어1동 카페",
+    "대구광역시 범어2동 카페",
+    "대구광역시 범어3동 카페",
+    "대구광역시 범어4동 카페",
+    "대구광역시 만촌1동 카페",
+    "대구광역시 만촌2동 카페",
+    "대구광역시 만촌3동 카페",
+    "대구광역시 수성동1가 카페",
+    "대구광역시 수성동2가 카페",
+    "대구광역시 수성동3가 카페",
+    "대구광역시 수성동4가 카페",
+    "대구광역시 황금1동 카페",
+    "대구광역시 황금2동 카페",
+    "대구광역시 중동 카페",
+    "대구광역시 상동 카페",
+    "대구광역시 파동 카페",
+    "대구광역시 두산동 카페",
+    "대구광역시 지산1동 카페",
+    "대구광역시 지산2동 카페",
+    "대구광역시 범물1동 카페",
+    "대구광역시 범물2동 카페",
+    "대구광역시 고산1동 욱수동 카페",
+    "대구광역시 고산1동 신매동 카페",
+    "대구광역시 고산2동 시지동 카페",
+    "대구광역시 고산2동 대흥동 카페",
+    "대구광역시 고산2동 삼덕동 카페",
+    "대구광역시 고산2동 연호동 카페",
+    "대구광역시 고산2동 이천동 카페",
+    "대구광역시 고산2동 고모동 카페",
+    "대구광역시 고산2동 가천동 카페",
+    "대구광역시 고산2동 노변동 카페",
+    "대구광역시 고산3동 매호동 카페",
+    "대구광역시 고산3동 성동 카페",
+    "대구광역시 고산3동 사월동 카페",
+    "대구광역시 고산3동 신매동 카페",
+    "대구광역시 성당동 카페",
+    "대구광역시 두류1동 카페",
+    "대구광역시 두류2동 카페",
+    "대구광역시 두류3동 카페",
+    "대구광역시 본리동 카페",
+    "대구광역시 감삼동 카페",
+    "대구광역시 죽전동 카페",
+    "대구광역시 장기동 카페",
+    "대구광역시 장동 카페",
+    "대구광역시 용산1동 카페",
+    "대구광역시 용산2동 카페",
+    "대구광역시 이곡1동 카페",
+    "대구광역시 이곡2동 카페",
+    "대구광역시 갈산동 카페",
+    "대구광역시 호산동 카페",
+    "대구광역시 파호동 카페",
+    "대구광역시 호림동 카페",
+    "대구광역시 신당동 카페",
+    "대구광역시 갈산동 카페",
+    "대구광역시 월성1동 카페",
+    "대구광역시 월성2동 카페",
+    "대구광역시 대천동 카페",
+    "대구광역시 월암동 카페",
+    "대구광역시 진천동 카페",
+    "대구광역시 대곡동 카페",
+    "대구광역시 유천동 카페",
+    "대구광역시 상인1동 카페",
+    "대구광역시 상인2동 카페",
+    "대구광역시 상인3동 카페",
+    "대구광역시 도원동 카페",
+    "대구광역시 송현1동 카페",
+    "대구광역시 송현2동 카페",
+    "대구광역시 본동 카페",
+    "대구광역시 화원읍 카페",
+    "대구광역시 논공읍 카페",
+    "대구광역시 다사읍 카페",
+    "대구광역시 유가읍 카페",
+    "대구광역시 옥포읍 카페",
+    "대구광역시 현풍읍 카페",
+    "대구광역시 가창면 카페",
+    "대구광역시 하빈면 카페",
+    "대구광역시 구지면 카페",
+    "대구광역시 군위읍 카페",
+    "대구광역시 소보면 카페",
+    "대구광역시 효령면 카페",
+    "대구광역시 부계면 카페",
+    "대구광역시 우보면 카페",
+    "대구광역시 의흥면 카페",
+    "대구광역시 산성면 카페",
+    "대구광역시 삼국유사면 카페"
+
+    
+    # 여기에 다른 지역명을 추가할 수 있습니다.
+]
+
+# 네이버 플레이스 페이지 열기
+driver.get(initial_url)
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "input_search")))
+
+# 검색어 입력 함수
+def search_for_area(area_name):
+    search_box = driver.find_element(By.CLASS_NAME, "input_search")
+    search_box.clear()
+    search_box.send_keys(area_name)
+    search_box.send_keys(Keys.ENTER)
+    time.sleep(5)  # 페이지 로딩 대기
+    switch_to_search_iframe()
+
+# iframe 전환 함수
+def switch_to_search_iframe():
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "iframe#searchIframe")))
+    iframe = driver.find_element(By.CSS_SELECTOR, "iframe#searchIframe")
+    driver.switch_to.frame(iframe)
+
+# 페이지 로딩 대기
+time.sleep(5)
+
+# 기존에 수집된 주소를 저장할 세트 (중복 방지)
+collected_addresses = set()
+
+# CSV 파일에서 기존에 수집된 주소 불러오기
+def load_existing_addresses(file_name):
+    if os.path.exists(file_name):
+        df = pd.read_csv(file_name, encoding='utf-8-sig')
+        return set(df['주소'].tolist())
+    return set()
+
+# MVx6e 클래스를 가진 요소 두 번 클릭
+def click_before_scroll():
+    try:
+        mvx6e_element = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CLASS_NAME, "MVx6e"))
+        )
+        # 두 번 클릭
+        mvx6e_element.click()
+        time.sleep(0.5)
+        mvx6e_element.click()
+        print("MVx6e 요소 두 번 클릭 성공")
+    except Exception as e:
+        print(f"MVx6e 요소 클릭 실패: {e}")
+
+# 스크롤을 계속 내려 모든 요소 로드
+def scroll_until_no_more_tyaxT():
+    last_count = 0
+    no_change_start = time.time()
+
+    while True:
+        elements = driver.find_elements(By.CLASS_NAME, "TYaxT")
+        current_count = len(elements)
+
+        if current_count > last_count:
+            last_count = current_count
+            no_change_start = time.time()
+            print(f"현재 TYaxT 요소 개수: {current_count}")
+        else:
+            if time.time() - no_change_start > 4:
+                print("4초간 TYaxT 요소 개수 변화 없음. 스크롤을 멈춥니다.")
+                break
+
+        body_element = driver.find_element(By.TAG_NAME, "body")
+        for _ in range(10):
+            body_element.send_keys(Keys.PAGE_DOWN)
+            time.sleep(0.1)
+
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CLASS_NAME, "TYaxT"))
+        )
+
+# 데이터를 CSV 파일에 저장
+def save_to_csv(file_name, data, mode='a', header=False):
+    columns_order = ['이름', '주소', '운영 시간', '평점', '이미지 주소', 'SNS 링크', '주차 정보', 
+                     '리뷰1', '리뷰2', '리뷰3', '경치가 좋은', '넓은', '사람 많은', '인테리어 예쁜', '사진찍기 좋은', '조용한']
+    df = pd.DataFrame([data], columns=columns_order)
+    df.to_csv(file_name, mode=mode, header=header, index=False, encoding='utf-8-sig')
+
+# 카테고리 매핑
+keyword_class_mapping = {
+    "인테리어가 멋져요": "interior",
+    "인테리어 예쁜": "interior",
+    "사진이 잘 나와요": "photo",
+    "대화하기 좋아요": "talk",
+    "집중하기 좋아요": "calm",
+    "뷰가 좋아요": "view",
+    "경치가 좋은": "view",
+    "매장이 넓어요": "space",
+    "넓은": "space",
+    "아늑해요": "space",
+    "단체모임 하기 좋아요": "manypeople",
+    "차분한 분위기예요": "calm",
+}
+
+# 리뷰 매칭을 위한 함수
+def match_keywords_in_review(reviews, counts):
+    local_category_count = {key: 0 for key in keyword_class_mapping.values()}  # 로컬 카운트 초기화
+    for review_text, count in zip(reviews, counts):
+        for keyword, category in keyword_class_mapping.items():
+            if keyword in review_text:  # 키워드가 포함된 경우
+                local_category_count[category] += count  # 매칭된 카테고리 카운트
+                print(f"키워드 '{keyword}'가 '{category}'로 매핑되었습니다. {count}명이 선택했습니다.")
+    return local_category_count
+
+# 리뷰 데이터를 수집하기 전에 '더보기' 버튼 클릭
+def click_more_button():
+    while True:
+        try:
+            more_button = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, "//a[@role='button' and @class='dP0sq']"))
+            )
+            more_button.click()
+            time.sleep(1)  # 버튼 클릭 후 잠시 대기
+        except:
+            break  # 더 이상 '더보기' 버튼이 없으면 루프 종료
+
+# 데이터를 CSV 파일에 저장할 때 특수 문자를 제거하는 함수
+def clean_text(text):
+    return text.replace('"', '').replace("'", "").replace("\n", " ").strip()  # 큰 따옴표와 줄바꿈 제거
+
+# 수집한 카페 정보를 클릭하여 상세 데이터 추출
+def click_and_collect_reviews():
+    elements = driver.find_elements(By.CLASS_NAME, "TYaxT")
+    for element in elements:
+        place_name = clean_text(element.text)  # 텍스트 정리
+        print(f"클릭할 요소 텍스트: {place_name}")
+
+        # 가게 이름 클릭
+        element.click()
+        time.sleep(5)
+
+        try:
+            driver.switch_to.default_content()
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "iframe#entryIframe")))
+            entry_iframe = driver.find_element(By.CSS_SELECTOR, "iframe#entryIframe")
+            driver.switch_to.frame(entry_iframe)
+            print("entryIframe으로 전환 성공")
+
+            # 주소 추출
+            address_element = driver.find_element(By.CLASS_NAME, "LDgIH")
+            address = clean_text(address_element.text.strip())
+
+            # 중복 데이터 확인
+            if address in collected_addresses:
+                print(f"이미 수집된 주소입니다: {address}")
+                driver.back()
+                time.sleep(3)
+                switch_to_search_iframe()
+                continue
+
+            # 중복이 아니면 주소 저장
+            collected_addresses.add(address)
+
+            # 영업시간 추출
+            try:
+                expand_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, "y6tNq")))
+                expand_button.click()
+                time_elements = driver.find_elements(By.CLASS_NAME, "w9QyJ")
+                operating_hours_str = clean_text(", ".join([elem.text for elem in time_elements])) if time_elements else "운영 시간 정보 없음"
+            except:
+                operating_hours_str = "운영 시간 정보 없음"
+
+            # 평점 추출
+            try:
+                rating_element = driver.find_element(By.CLASS_NAME, "PXMot")
+                rating_text = clean_text(rating_element.text.split("별점")[-1].strip())
+                rating = float(rating_text) if rating_text else "평점 없음"
+            except:
+                rating = "평점 없음"
+
+            # 이미지 주소 추출
+            try:
+                image_elements = driver.find_elements(By.CSS_SELECTOR, ".place_thumb.QX0J7 img")
+                image_urls = [img.get_attribute("src") for img in image_elements if img.get_attribute("src").startswith("http")]
+                
+                # 이미지 주소가 하나일 경우와 여러 개일 경우 따옴표 처리
+                if len(image_urls) == 1:
+                    image_urls = f'"{image_urls[0]}"'
+                elif len(image_urls) > 1:
+                    image_urls = f'"{", ".join(image_urls)}"'
+                else:
+                    image_urls = "이미지 없음"
+
+            except:
+                image_urls = "이미지 없음"
+
+
+            # SNS 링크 추출
+            try:
+                sns_links = []
+                sns_elements = driver.find_elements(By.CSS_SELECTOR, ".place_bluelink.CHmqa, .place_bluelink.iBUwB")
+                for sns_element in sns_elements:
+                    link = sns_element.get_attribute('href')
+                    if link.startswith("http"):
+                        sns_links.append(link)
+                
+                # SNS 링크가 여러 개인 경우 쉼표로 구분하여 따옴표로 감싸기, 하나일 경우도 따옴표로 감싸기
+                if len(sns_links) == 1:
+                    sns_links = f'"{sns_links[0]}"'
+                elif len(sns_links) > 1:
+                    sns_links = f'"{", ".join(sns_links)}"'
+                else:
+                    sns_links = "링크 없음"
+
+            except:
+                sns_links = "링크 없음"
+
+
+            # 주차 정보 추출
+            try:
+                fvwqf_tab = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, "fvwqf")))
+                driver.execute_script("arguments[0].click();", fvwqf_tab)
+                parking_status_element = driver.find_element(By.CLASS_NAME, "TZ6eS")
+                parking_status = clean_text(parking_status_element.text)
+                parking_details_element = driver.find_element(By.CLASS_NAME, "zPfVt")
+                parking_details = clean_text(parking_details_element.text) if parking_details_element else "주차장 정보 없음"
+                parking_info = f"{parking_status}, {parking_details}"
+            except:
+                parking_info = "알수없음"
+
+            # 리뷰 탭 클릭 및 리뷰 수집
+            review_tab = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//span[@class='veBoZ' and text()='리뷰']")))
+            review_tab.click()
+            time.sleep(3)
+
+            # '더보기' 버튼 클릭
+            click_more_button()
+
+            # 전체 리뷰 가져오기
+            reviews = driver.find_elements(By.CLASS_NAME, "t3JSf")
+            counts = driver.find_elements(By.CLASS_NAME, "CUoLy")
+
+            all_reviews = [clean_text(review.text.strip()) for review in reviews if review.text.strip()]
+            all_counts = [int(count.text.replace("이 키워드를 선택한 인원", "").strip()) for count in counts if count.text.strip()]
+
+            if len(all_reviews) != len(all_counts):
+                print(f"리뷰와 인원 수 매칭 실패")
+                driver.back()
+                time.sleep(3)
+                switch_to_search_iframe()
+                continue
+
+            # 키워드 매칭
+            local_category_count = match_keywords_in_review(all_reviews, all_counts)
+
+            # 상위 3개의 리뷰 저장
+            review1, review2, review3 = (all_reviews + ["", "", ""])[:3]
+
+            # 데이터 저장
+            review_entry = {
+                "이름": place_name,
+                "주소": address,
+                "운영 시간": operating_hours_str,
+                "평점": rating,
+                "이미지 주소": image_urls,
+                "SNS 링크": sns_links,
+                "주차 정보": parking_info,
+                "리뷰1": review1,
+                "리뷰2": review2,
+                "리뷰3": review3,
+                "경치가 좋은": local_category_count.get("view", 0),
+                "넓은": local_category_count.get("space", 0),
+                "사람 많은": local_category_count.get("manypeople", 0),
+                "인테리어 예쁜": local_category_count.get("interior", 0),
+                "사진찍기 좋은": local_category_count.get("photo", 0),
+                "조용한": local_category_count.get("calm", 0)
+            }
+
+            # 데이터 CSV 저장
+            file_name = "cafe_reviews_test.csv"
+            if not os.path.exists(file_name):
+                save_to_csv(file_name, review_entry, mode='w', header=True)
+            else:
+                save_to_csv(file_name, review_entry, mode='a', header=False)
+
+        except Exception as e:
+            print(f"리뷰 탭 클릭 후 데이터 수집 실패: {e}")
+            driver.back()
+            time.sleep(3)
+            switch_to_search_iframe()
+            continue
+
+        # 뒤로 가기
+        driver.back()
+        time.sleep(3)
+        switch_to_search_iframe()
+
+# 페이지 버튼 순차 클릭
+def click_page_buttons():
+    for i in range(1, 6):  # 5페이지 이하라 가정
+        try:
+            click_before_scroll()  # 두 번 클릭 호출
+            scroll_until_no_more_tyaxT()  # 스크롤 호출
+            click_and_collect_reviews()
+            WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a.mBN2s")))
+            page_buttons = driver.find_elements(By.CSS_SELECTOR, "a.mBN2s")
+
+            if i < len(page_buttons):
+                page_buttons[i].click()
+                print(f"{i+1}번 페이지로 이동")
+                time.sleep(6)
+                driver.switch_to.default_content()
+                switch_to_search_iframe()
+                time.sleep(2)
+            else:
+                print(f"{i+1}번 페이지 버튼을 찾을 수 없음.")
+                break
+        except Exception as e:
+            print(f"{i+1}번 페이지로 이동 실패: {e}")
+            break
+
+# 기존에 저장된 주소 불러오기
+collected_addresses = load_existing_addresses("cafe_reviews_test.csv")
+
+# 지역별로 검색어를 바꾸며 페이지 탐색 및 데이터 수집
+for area_name in area_names:
+    search_for_area(area_name)
+    click_page_buttons()
+
+# 종료
+driver.quit()
