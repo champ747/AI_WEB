@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/cafe_chuchu_logo.png';
 import profileImage from '../assets/images/cafe_chuchu_profile.png';
 import wishlistImage from '../assets/images/cafe_chuchu_wishlist.png';
-import myListImage from '../assets/images/cafe_chuchu_mylist.png';
-import visitHistoryImage from '../assets/images/cafe_chuchu_visithistory.png';
+import myProfileIcon from '../assets/images/cafe_chuchu_myprofile.png';
+import maleIcon from '../assets/images/male_icon.png';  
+import femaleIcon from '../assets/images/female_icon.png'; 
 import './MyPage.css';
 
 const MyPage = () => {
@@ -15,20 +16,12 @@ const MyPage = () => {
     navigate('/home');
   };
 
-  const goToProfile = () => {
-    navigate('/mypage/profile');
+  const goToProfileModify = () => {
+    navigate('/mypage/profilemoodify');
   };
 
   const goToWishlist = () => {
     navigate('/mypage/wishlist');
-  };
-
-  const goToMyList = () => {
-    navigate('/mypage/my-list');
-  };
-
-  const goToVisitHistory = () => {
-    navigate('/mypage/visit-history');
   };
 
   const openModal = () => {
@@ -43,35 +36,41 @@ const MyPage = () => {
     <div className="mypage-container">
       <img src={logo} alt="Cafe ChuChu" className="logo" onClick={goToHome} />
       <div className="profile-picture" onClick={openModal}></div>
-      <div className="nickname">닉네임</div>
-      <div className="profile-link" onClick={goToProfile}>내 프로필 &gt;</div>
-      <div className="line line1"></div>
-      <div className="points">내 적립금</div>
-      <div className="points-value">원</div>
-      <div className="points-link">내역 확인하기 &gt;</div>
-      <div className="line line2"></div>
-      
-      {/* 내 리스트 */}
-      <div className="mylist-icon" onClick={goToMyList}>
-        <img src={myListImage} alt="My List" />
-      </div>
-      <div className="my-list" onClick={goToMyList}>내 리스트</div>
-      
+      <div className="mypage-id">아이디</div>
+      <div className="profilemodify-link" onClick={goToProfileModify}>프로필 수정 &gt;</div>
+
+      <div className="line1"></div>
+
       {/* 찜 목록 */}
-      <div className="wishlist-icon" onClick={goToWishlist}>
-        <img src={wishlistImage} alt="Wishlist" />
-      </div>
-      <div className="wishlist" onClick={goToWishlist}>찜 목록</div>
-      
-      {/* 방문 기록 */}
-      <div className="visit-history-icon" onClick={goToVisitHistory}>
-        <img src={visitHistoryImage} alt="Visit History" />
-      </div>
-      <div className="visit-history" onClick={goToVisitHistory}>방문 기록</div>
-      
-      <div className="line line3"></div>
-      <div className="divider-vertical divider1"></div>
-      <div className="divider-vertical divider2"></div>
+      <img className="wishlist-icon" onClick={goToWishlist} src={wishlistImage} alt="Wishlist" />
+      <div className="wishlist-linkname" onClick={goToWishlist}>찜 목록</div>
+
+      <div className="line2"></div>
+
+      {/* 내 프로필 */}
+      <img className="myprofile-icon" src={myProfileIcon} alt="My Profile" />
+      <div className="myprofile">내 프로필</div>
+        
+      <span className="profile-title_name">이름</span>
+      <div className="myprofile-line1"></div>
+      <span className="profile-details_name">홍길동</span>
+      <img src={maleIcon} alt="male" className="gender-icon" />
+
+      <span className="profile-title_birth">생년월일</span>
+      <div className="myprofile-line2"></div>
+      <span className="profile-details_birth">0000년 00월 00일</span>
+
+      <span className="profile-title_phone">전화번호</span>
+      <div className="myprofile-line3"></div>
+      <span className="profile-details_phone">010-1234-5678</span>
+
+      <span className="profile-title_email">이메일</span>
+      <div className="myprofile-line4"></div>
+      <span className="profile-details_email">abcd1234@naver.com</span>
+
+      <span className="profile-title_job">직업</span>
+      <div className="myprofile-line5"></div>
+      <span className="profile-details_job">직장 O</span>
 
       {isModalOpen && (
         <div className="modal-overlay" onClick={closeModal}>

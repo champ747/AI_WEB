@@ -117,7 +117,7 @@
 }
 
 /* 카페 상태 및 위치 */
-.wishlist-info-status {
+.wishlist-info-status_open {
     font-size: 15px;
     color: #FF3B30;
     position: absolute;
@@ -125,38 +125,28 @@
     left: 137px;
 }
 
-.wishlist_line1 {
-    position: absolute;
-    width: 1px;
-    height: 10px;
-    background: #B5B5B5;
-    left: 191px;
-    top: 66px;
-}
-
-.wishlist-info-distance {
+.wishlist-info-status_close {
     font-size: 15px;
+    color: #000000;
     position: absolute;
     top: 62px;
-    left: 201px;
-    
+    left: 137px;
 }
 
-.wishlist_line2 {
+.wishlist_line {
     position: absolute;
     width: 1px;
     height: 10px;
     background: #B5B5B5;
-    display: flex;
-    margin-left: 10px;
-    top: 66px
+    left: 190px;
+    top: 66px;
 }
 
 .wishlist-info-location {
     font-size: 15px;
     position: absolute;
     top: 62px;
-    margin-left: 10px;
+    left : 201px;
 }
 
 /* 아이콘 스타일 */
