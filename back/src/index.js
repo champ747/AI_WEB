@@ -27,6 +27,26 @@ app.post('/', (req,res)=> {
     res.json(req.body);
 });
 
+
+// Flask API
+app.post('/chat', async (req, res) => {
+    const userMessage = req.body.message;
+
+    try {
+        // Flask API로 POST 요청
+        const response = await axios.post('http://localhost:5000/recommend', {
+            message: userMessage
+        });
+
+        // 응답 반환
+        res.json({ response: response.data.recommendations });
+    } catch (error) {
+        console.error('Flask API와 통신 중 오류 발생:', error);
+        res.status(500).json({ error: 'Flask API와 통신에 실패했습니다.' });
+    }
+});
+
+
 //라우트 연결
 app.use('/users', require('./routes/users'));
 app.use('/cafes', require('./routes/cafes'));
@@ -43,3 +63,4 @@ app.use(express.static(path.join(__dirname, '../uploads'))); // 이미지 파일
 app.listen(port, () => {
     console.log(`${port}번에서 실행이 되었습니다.`); // 템플릿 리터럴 수정
 });
+

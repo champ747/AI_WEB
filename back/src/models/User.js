@@ -34,13 +34,13 @@ const userSchema = mongoose.Schema({
     },
     cafe_preferences: {
         type: [String], 
-        enum: [ // 추후 수정 필요***
-            'cozy',        
-            'modern',      
-            'classic',     
-            'vintage',     
-            'minimalist',  
-            'rustic'       
+        eenum: [
+            '경치가 좋은',     
+            '넓은',          
+            '사람 많은',      
+            '인테리어 예쁜', 
+            '사진찍기 좋은', 
+            '조용한' 
         ],
         validate: [arrayLimit, '{PATH} exceeds the limit of 6'], // 최대 6개까지 선택 가능
         default: []
@@ -55,7 +55,7 @@ const userSchema = mongoose.Schema({
 
 //선호분위기 배열 6개 제한
 function arrayLimit(val) {
-    return val.Length <= 6;
+    return val.length <= 6;
 }
 
 //비밀번호 암호화

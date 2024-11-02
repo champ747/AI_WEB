@@ -4,6 +4,9 @@ import numpy as np
 from konlpy.tag import Okt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from flask import Flask, request, jsonfiy
+
+app = Flask(__name__)
 
 # FastText 한국어 모델 로드
 model = gensim.models.KeyedVectors.load("cc.ko.300.kv")  # 미리 저장된 KeyedVectors 모델 사용
@@ -144,3 +147,19 @@ while True:
         break
     recommendations = recommend_cafes(user_input)
     print(f"\n{recommendations}\n")
+
+
+# API
+def recommend():
+    data = request.get_json()
+    user_input = data.get('message')
+
+    if not user_input:
+        return jsonify({"error": "No input provided"}), 400
+
+    recommendations = recommend_cafes(user_input)
+    
+    return jsonify({"recommendations": recommendations})
+
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
