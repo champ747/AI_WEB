@@ -46,8 +46,8 @@
 /* 프로필 수정 링크 */
 .profilemodify-link {
     position: absolute;
-    left: 157px;
-    top: 260px;
+    left: 286px;
+    top: 364px;
     font-size: 15px;
     line-height: 20px;
     text-align: center;
@@ -62,7 +62,7 @@
     width: 334px;
     background-color: #674D42;
     left: 28px;
-    top: 312.04px;
+    top: 271.04px;
 }
 
 .line2 {
@@ -71,14 +71,14 @@
     width: 334px;
     background-color: #674D42;
     left: 28px;
-    top: 381.04px;
+    top: 340.04px;
 }
 
 /* 찜 목록 연결 */
 .wishlist-icon {
     position: absolute;
     left: 33px;
-    top: 331px;
+    top: 290px;
     width: 30px;
     height: 30px;
     cursor: pointer;
@@ -87,7 +87,7 @@
 .wishlist-linkname {
     position: absolute;
     left: 71px;
-    top: 333px;
+    top: 292px;
     font-size: 24px;
     color: #000000;
     cursor: pointer;
@@ -97,7 +97,7 @@
 .myprofile-icon {
     position: absolute;
     left: 33px;
-    top: 400px;
+    top: 359px;
     width: 30px;
     height: 30px;
     cursor: pointer;
@@ -106,7 +106,7 @@
 .myprofile {
     position: absolute;
     left: 71px;
-    top: 402px;
+    top: 361px;
     font-size: 24px;
     color: #000000;
     cursor: pointer;
@@ -115,7 +115,7 @@
 /* 프로필 세부사항 - 이름 */
 .profile-title_name {
     position: absolute;
-    top: 453px;
+    top: 412px;
     left: 33px;
     font-size: 20px;
     color: #878787;
@@ -127,12 +127,12 @@
     width: 1px;
     background-color: #B5B5B5;
     left: 81px;
-    top: 457px;
+    top: 416px;
 }
 
 .profile-details_name {
     position: absolute;
-    top: 453px;
+    top: 412px;
     left: 96px;
     font-size: 22px;
     color: #000000;
@@ -141,7 +141,7 @@
 .gender-icon {
     position: absolute;
     left: 154px;
-    top: 452px;
+    top: 411px;
     width: 25px;
     height: 25px;
 }
@@ -149,7 +149,7 @@
 /* 프로필 세부사항 - 생년월일 */
 .profile-title_birth {
     position: absolute;
-    top: 504px;
+    top: 463px;
     left: 33px;
     font-size: 20px;
     color: #878787;
@@ -161,12 +161,12 @@
     width: 1px;
     background-color: #B5B5B5;
     left: 118px;
-    top: 508px;
+    top: 467px;
 }
 
 .profile-details_birth {
     position: absolute;
-    top: 504px;
+    top: 463px;
     left: 133px;
     font-size: 22px;
     color: #000000;
@@ -175,7 +175,7 @@
 /* 프로필 세부사항 - 전화번호 */
 .profile-title_phone {
     position: absolute;
-    top: 555px;
+    top: 514px;
     left: 33px;
     font-size: 20px;
     color: #878787;
@@ -187,12 +187,12 @@
     width: 1px;
     background-color: #B5B5B5;
     left: 116px;
-    top: 559px;
+    top: 518px;
 }
 
 .profile-details_phone {
     position: absolute;
-    top: 555px;
+    top: 514px;
     left: 131px;
     font-size: 22px;
     color: #000000;
@@ -201,7 +201,7 @@
 /* 프로필 세부사항 - 이메일 */
 .profile-title_email {
     position: absolute;
-    top: 606px;
+    top: 565px;
     left: 33px;
     font-size: 20px;
     color: #878787;
@@ -213,12 +213,12 @@
     width: 1px;
     background-color: #B5B5B5;
     left: 116px;
-    top: 610px;
+    top: 569px;
 }
 
 .profile-details_email {
     position: absolute;
-    top: 606px;
+    top: 565px;
     left: 131px;
     font-size: 22px;
     color: #000000;
@@ -227,7 +227,7 @@
 /* 프로필 세부사항 - 직업 */
 .profile-title_job {
     position: absolute;
-    top: 657px;
+    top: 616px;
     left: 33px;
     font-size: 20px;
     color: #878787;
@@ -239,12 +239,12 @@
     width: 1px;
     background-color: #B5B5B5;
     left: 116px;
-    top: 661px;
+    top: 620px;
 }
 
 .profile-details_job {
     position: absolute;
-    top: 657px;
+    top: 616px;
     left: 131px;
     font-size: 22px;
     color: #000000;
