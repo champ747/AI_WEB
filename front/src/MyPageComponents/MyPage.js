@@ -4,8 +4,8 @@ import logo from '../assets/images/cafe_chuchu_logo.png';
 import profileImage from '../assets/images/cafe_chuchu_profile.png';
 import wishlistImage from '../assets/images/cafe_chuchu_wishlist.png';
 import myProfileIcon from '../assets/images/cafe_chuchu_myprofile.png';
-import maleIcon from '../assets/images/male_icon.png';  // 남자 아이콘
-import femaleIcon from '../assets/images/female_icon.png';  // 여자 아이콘
+import maleIcon from '../assets/images/male_icon.png';  
+import femaleIcon from '../assets/images/female_icon.png'; 
 import './MyPage.css';
 
 const MyPage = () => {
