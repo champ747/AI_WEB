@@ -7,6 +7,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
+from selenium.webdriver.common.action_chains import ActionChains
+
 
 # ChromeDriver 경로 설정
 chrome_driver_path = 'C:/chromedriver/chromedriver.exe'
@@ -525,20 +527,67 @@ def click_and_collect_reviews():
 
             # 주차 정보 추출
             try:
+                # fvwqf_tab 요소가 클릭 가능해질 때까지 대기 후 클릭
                 fvwqf_tab = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, "fvwqf")))
                 driver.execute_script("arguments[0].click();", fvwqf_tab)
-                parking_status_element = driver.find_element(By.CLASS_NAME, "TZ6eS")
-                parking_status = clean_text(parking_status_element.text)
-                parking_details_element = driver.find_element(By.CLASS_NAME, "zPfVt")
-                parking_details = clean_text(parking_details_element.text) if parking_details_element else "주차장 정보 없음"
-                parking_info = f"{parking_status}, {parking_details}"
-            except:
-                parking_info = "알수없음"
 
+                # 주차 상태 정보(TZ6eS) 가져오기
+                parking_status_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "TZ6eS")))
+                parking_status = clean_text(parking_status_element.text)
+
+                # 주차 상세 정보(zPfVt) 가져오기
+                try:
+                    parking_details_element = driver.find_element(By.CLASS_NAME, "zPfVt")
+                    parking_details = clean_text(parking_details_element.text)
+                except:
+                    parking_details = "주차장 정보 없음"  # 상세 정보가 없을 때 기본값 설정
+
+                # 주차 상태와 상세 정보를 합쳐 최종 정보 생성
+                parking_info = f"{parking_status}, {parking_details}"
+
+            except Exception as e:
+                print(f"에러 발생: {e}")
+                parking_info = "알수없음"
             # 리뷰 탭 클릭 및 리뷰 수집
-            review_tab = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//span[@class='veBoZ' and text()='리뷰']")))
-            review_tab.click()
-            time.sleep(3)
+
+
+            retry_count = 5
+            for attempt in range(retry_count):
+                try:
+                    # '다음' 버튼을 사용해 모든 탭이 보이도록 반복적으로 클릭
+                    for _ in range(10):  # 최대 10번까지 클릭하여 모든 탭 표시
+                        try:
+                            next_button = driver.find_element(By.CSS_SELECTOR, "span.nK_aH")
+                            ActionChains(driver).move_to_element(next_button).click().perform()
+                            time.sleep(0.5)  # 클릭 후 잠시 대기
+                        except:
+                            print("더 이상 '다음' 버튼을 찾을 수 없습니다.")
+                            break  # '다음' 버튼이 없으면 반복 중지
+
+                    # '리뷰' 탭을 정확히 찾아 클릭
+                    review_tab_clicked = driver.execute_script("""
+                        const tabs = document.querySelectorAll('span.veBoZ');
+                        for (let tab of tabs) {
+                            if (tab.textContent.trim() === '리뷰') {
+                                tab.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                tab.click();  // 강제로 클릭
+                                return true;
+                            }
+                        }
+                        return false;
+                    """)
+
+                    if review_tab_clicked:
+                        print("'리뷰' 탭 클릭 성공")
+                        time.sleep(3)  # 탭이 열릴 때까지 대기
+                        break
+                    else:
+                        print("'리뷰' 탭을 찾지 못했습니다.")
+                except Exception as e:
+                    print(f"'리뷰' 탭 클릭 실패: {attempt + 1}/{retry_count} 재시도 중... ({e})")
+                    time.sleep(2)  # 재시도 전 잠시 대기
+
+
 
             # '더보기' 버튼 클릭
             click_more_button()
