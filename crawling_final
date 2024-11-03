@@ -21,11 +21,11 @@ initial_url = "https://map.naver.com/v5/search/"
 # 검색할 지역명 리스트
 area_names = [
     #"대구광역시 동인동 1가 카페", 
-    "대구광역시 동인동 2가 카페",
-    "대구광역시 동인동 3가 카페",
-    "대구광역시 동인동 4가 카페",
-    "대구광역시 삼덕동 1가 카페",
-    "대구광역시 삼덕동 2가 카페",
+    #"대구광역시 동인동 2가 카페",
+    #"대구광역시 동인동 3가 카페",
+    #"대구광역시 동인동 4가 카페",
+    #"대구광역시 삼덕동 1가 카페",
+    #"대구광역시 삼덕동 2가 카페",
     "대구광역시 삼덕동 3가 카페",
     "대구광역시 성내1동 봉산동 카페",
     "대구광역시 성내1동 동문동 카페",
@@ -687,12 +687,14 @@ collected_addresses = load_existing_addresses("cafe_reviews_test.csv")
 
 # 지역별로 검색어를 바꾸며 페이지 탐색 및 데이터 수집
 for area_name in area_names:
+    driver = webdriver.Chrome(service=service)
     driver.get(initial_url)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "input_search")))
+    
     search_for_area(driver, area_name)
     switch_to_search_iframe(driver)
     click_page_buttons(driver, area_name)
-    driver.quit()  # 한 지역 수집 완료 후 드라이버 종료
+    #driver.quit()  # 한 지역 수집 완료 후 드라이버 종료
 
 # 종료
 driver.quit()
