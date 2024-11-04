@@ -10,13 +10,6 @@ import os
 from selenium.webdriver.common.action_chains import ActionChains
 
 
-# ChromeDriver 경로 설정
-chrome_driver_path = 'C:/chromedriver/chromedriver.exe'
-service = Service(chrome_driver_path)
-driver = webdriver.Chrome(service=service)
-
-# 크롤링할 URL (초기 페이지)
-initial_url = "https://map.naver.com/v5/search/"
 
 # 검색할 지역명 리스트
 area_names = [
@@ -26,64 +19,64 @@ area_names = [
     #"대구광역시 동인동 4가 카페",
     #"대구광역시 삼덕동 1가 카페",
     #"대구광역시 삼덕동 2가 카페",
-    "대구광역시 삼덕동 3가 카페",
-    "대구광역시 성내1동 봉산동 카페",
-    "대구광역시 성내1동 동문동 카페",
-    "대구광역시 성내1동 문화동 카페",
-    "대구광역시 성내1동 공평동 카페",
-    "대구광역시 성내1동 동성로1가 카페",
-    "대구광역시 성내1동 동성로2가 카페",
-    "대구광역시 성내1동 동성로3가 카페",
-    "대구광역시 성내1동 교동 카페",
-    "대구광역시 성내1동 용덕동 카페",
-    "대구광역시 성내1동 상덕동 카페",
-    "대구광역시 성내1동 완전동 카페",
-    "대구광역시 성내1동 덕산동 카페",
-    "대구광역시 성내1동 사일동 카페",
-    "대구광역시 성내1동 남일동 카페",
-    "대구광역시 성내1동 포정동 카페",
-    "대구광역시 성내1동 태평로1가 카페",
-    "대구광역시 성내1동 화전동 카페",
-    "대구광역시 성내1동 북성로1가 카페",
-    "대구광역시 성내2동 동성로3가 카페",
-    "대구광역시 성내2동 덕산동 카페",
-    "대구광역시 성내2동 장관동 카페",
-    "대구광역시 성내2동 하서동 카페",
-    "대구광역시 성내2동 상서동 카페",
-    "대구광역시 성내2동 수동 카페",
-    "대구광역시 성내2동 남성로 카페",
-    "대구광역시 성내2동 계산동1가 카페",
-    "대구광역시 성내2동 계산동2가 카페",
-    "대구광역시 성내2동 종로1가 카페",
-    "대구광역시 성내2동 종로2가 카페",
-    "대구광역시 성내2동 남일동 카페",
-    "대구광역시 성내2동 동일동 카페",
-    "대구광역시 성내2동 전동 카페",
-    "대구광역시 성내2동 포정동 카페",
-    "대구광역시 성내2동 서문로1가 카페",
-    "대구광역시 성내2동 서내동 카페",
-    "대구광역시 성내2동 북내동 카페",
-    "대구광역시 성내2동 대안동 카페",
-    "대구광역시 성내2동 서성로1가 카페",
-    "대구광역시 성내2동 서성로2가 카페",
-    "대구광역시 성내2동 태평로2가 카페",
-    "대구광역시 성내2동 태평로3가 카페",
-    "대구광역시 성내2동 동산동 카페",
-    "대구광역시 성내2동 수창동 카페",
-    "대구광역시 성내2동 화전동 카페",
-    "대구광역시 성내2동 향촌동 카페",
-    "대구광역시 성내2동 북성로1가 카페",
-    "대구광역시 성내2동 북성로2가 카페",
-    "대구광역시 성내3동 서문로2가 카페",
-    "대구광역시 성내3동 인교동 카페",
-    "대구광역시 성내3동 서야동 카페",
-    "대구광역시 성내3동 서성로1가 카페",
-    "대구광역시 성내3동 태평로3가 카페",
-    "대구광역시 성내3동 동산동 카페",
-    "대구광역시 성내3동 시장북로 카페",
-    "대구광역시 성내3동 달성동 카페",
-    "대구광역시 성내3동 도원동 카페",
-    "대구광역시 성내3동 수창동 카페",
+    #"대구광역시 삼덕동 3가 카페",
+    #"대구광역시 봉산동 카페",
+    #"대구광역시 동문동 카페",
+    #"대구광역시 문화동 카페",
+    #"대구광역시 공평동 카페",
+    #"대구광역시 동성로1가 카페",
+    #"대구광역시 동성로2가 카페",
+    #"대구광역시 동성로3가 카페",
+    #"대구광역시 교동 카페",
+    #"대구광역시 용덕동 카페",
+    #"대구광역시 상덕동 카페",
+    #"대구광역시 완전동 카페",
+    #"대구광역시 덕산동 카페",
+    #"대구광역시 사일동 카페",
+    #"대구광역시 남일동 카페",
+    #"대구광역시 포정동 카페",
+    "대구광역시 태평로1가 카페",
+    "대구광역시 화전동 카페",
+    "대구광역시 북성로1가 카페",
+    "대구광역시 동성로3가 카페",
+    "대구광역시 덕산동 카페",
+    "대구광역시 장관동 카페",
+    "대구광역시 하서동 카페",
+    "대구광역시 상서동 카페",
+    "대구광역시 수동 카페",
+    "대구광역시 남성로 카페",
+    "대구광역시 계산동1가 카페",
+    "대구광역시 계산동2가 카페",
+    "대구광역시 종로1가 카페",
+    "대구광역시 종로2가 카페",
+    "대구광역시 남일동 카페",
+    "대구광역시 동일동 카페",
+    "대구광역시 전동 카페",
+    "대구광역시 포정동 카페",
+    "대구광역시 서문로1가 카페",
+    "대구광역시 서내동 카페",
+    "대구광역시 북내동 카페",
+    "대구광역시 대안동 카페",
+    "대구광역시 서성로1가 카페",
+    "대구광역시 서성로2가 카페",
+    "대구광역시 태평로2가 카페",
+    "대구광역시 태평로3가 카페",
+    "대구광역시 동산동 카페",
+    "대구광역시 수창동 카페",
+    "대구광역시 화전동 카페",
+    "대구광역시 향촌동 카페",
+    "대구광역시 북성로1가 카페",
+    "대구광역시 북성로2가 카페",
+    "대구광역시 서문로2가 카페",
+    "대구광역시 인교동 카페",
+    "대구광역시 서야동 카페",
+    "대구광역시 서성로1가 카페",
+    "대구광역시 태평로3가 카페",
+    "대구광역시 동산동 카페",
+    "대구광역시 시장북로 카페",
+    "대구광역시 달성동 카페",
+    "대구광역시 도원동 카페",
+    "대구광역시 수창동 카페",
     "대구광역시 중구 시장북로 카페",
     "대구광역시 중구 대신동 카페",
     "대구광역시 남산1동 카페",
@@ -682,19 +675,33 @@ def click_page_buttons(driver, current_search):
             break
     
 
-# 기존에 저장된 주소 불러오기
-collected_addresses = load_existing_addresses("cafe_reviews_test.csv")
+while(True):
+    try:
 
-# 지역별로 검색어를 바꾸며 페이지 탐색 및 데이터 수집
-for area_name in area_names:
-    driver = webdriver.Chrome(service=service)
-    driver.get(initial_url)
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "input_search")))
-    
-    search_for_area(driver, area_name)
-    switch_to_search_iframe(driver)
-    click_page_buttons(driver, area_name)
-    #driver.quit()  # 한 지역 수집 완료 후 드라이버 종료
+        # ChromeDriver 경로 설정
+        chrome_driver_path = 'C:/chromedriver/chromedriver.exe'
+        service = Service(chrome_driver_path)
+        driver = webdriver.Chrome(service=service)
 
-# 종료
-driver.quit()
+        # 크롤링할 URL (초기 페이지)
+        initial_url = "https://map.naver.com/v5/search/"
+
+        # 기존에 저장된 주소 불러오기
+        collected_addresses = load_existing_addresses("cafe_reviews_test.csv")
+
+        # 지역별로 검색어를 바꾸며 페이지 탐색 및 데이터 수집
+        for area_name in area_names:
+            print(area_name)
+            driver = webdriver.Chrome(service=service)
+            driver.get(initial_url)
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "input_search")))
+            
+            search_for_area(driver, area_name)
+            switch_to_search_iframe(driver)
+            click_page_buttons(driver, area_name)
+            #driver.quit()  # 한 지역 수집 완료 후 드라이버 종료
+
+        # 종료
+        driver.quit()
+    except:
+        driver.quit()
