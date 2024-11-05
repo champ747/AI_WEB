@@ -1,14 +1,14 @@
-def recommend_cafes_with_weights(user_preference_atmosphere, atmosphere_weight, service_weight, price_weight):
+def recommend_cafes_with_weights(user_preference_atmosphere, atmosphere_weight, service_weight):
     # 예시 데이터: 카페 리스트
     cafes = [
-        {'name': 'Cafe A', 'atmosphere': 1, 'service_rating': 4.5, 'price_level': 3},
-        {'name': 'Cafe B', 'atmosphere': 3, 'service_rating': 4.0, 'price_level': 5},
-        {'name': 'Cafe C', 'atmosphere': 2, 'service_rating': 3.8, 'price_level': 2},
-        {'name': 'Cafe D', 'atmosphere': 5, 'service_rating': 4.8, 'price_level': 4},
-        {'name': 'Cafe E', 'atmosphere': 1, 'service_rating': 4.7, 'price_level': 5},
-        {'name': 'Cafe F', 'atmosphere': 6, 'service_rating': 4.1, 'price_level': 4},
-        {'name': 'Cafe G', 'atmosphere': 3, 'service_rating': 3.9, 'price_level': 2},
-        {'name': 'Cafe H', 'atmosphere': 4, 'service_rating': 3.5, 'price_level': 1}
+        {'name': 'Cafe A', 'atmosphere': 1, 'service_rating': 4.5},
+        {'name': 'Cafe B', 'atmosphere': 3, 'service_rating': 4.0},
+        {'name': 'Cafe C', 'atmosphere': 2, 'service_rating': 3.8},
+        {'name': 'Cafe D', 'atmosphere': 5, 'service_rating': 4.8},
+        {'name': 'Cafe E', 'atmosphere': 1, 'service_rating': 4.7},
+        {'name': 'Cafe F', 'atmosphere': 6, 'service_rating': 4.1},
+        {'name': 'Cafe G', 'atmosphere': 3, 'service_rating': 3.9},
+        {'name': 'Cafe H', 'atmosphere': 4, 'service_rating': 3.5}
     ]
     
     # 최대 서비스 평점 정의 (기준점)
@@ -25,11 +25,8 @@ def recommend_cafes_with_weights(user_preference_atmosphere, atmosphere_weight, 
         # 서비스 점수 계산 (높을수록 선호)
         service_diff = max_service_rating - cafe['service_rating']
         
-        # 가격 점수 계산 (낮을수록 선호)
-        price_score = cafe['price_level']
-        
         # 최종 점수 계산
-        final_score = (atmosphere_diff * atmosphere_weight) + (service_diff * service_weight) + (price_score * price_weight)
+        final_score = (atmosphere_diff * atmosphere_weight) + (service_diff * service_weight)
         
         # 카페 이름과 최종 점수를 리스트에 추가
         recommendations.append({
@@ -49,12 +46,11 @@ def recommend_cafes_with_weights(user_preference_atmosphere, atmosphere_weight, 
 user_preference_atmosphere = 1  # 사용자가 선호하는 카페 분위기
 
 # 사용자의 중요도(가중치) 설정
-atmosphere_weight = 0.5
+atmosphere_weight = 0.7
 service_weight = 0.3
-price_weight = 0.2
 
 # 추천 결과 출력(점수가 낮으면 낮을수록 원하는 카페에 가까움)
-recommendations = recommend_cafes_with_weights(user_preference_atmosphere, atmosphere_weight, service_weight, price_weight)
+recommendations = recommend_cafes_with_weights(user_preference_atmosphere, atmosphere_weight, service_weight)
 for r in recommendations:
     print(f"카페: {r['name']}, 점수: {r['final_score']}")
 
