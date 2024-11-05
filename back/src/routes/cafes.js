@@ -17,13 +17,35 @@ router.get('/search', async (req, res, next) => {
         findArgs.category = category; 
     }
 
-    // 시간 기반 조회 (오픈 시간과 마감 시간 사이에 있는 카페 조회)
-    if (openTime && closeTime) {
-        findArgs.$and = [
-            { open_time: { $lte: openTime } },   // 오픈 시간이 입력된 시간보다 빠르거나 같음
-            { close_time: { $gte: closeTime } }  // 마감 시간이 입력된 시간보다 늦거나 같음
-        ];
+    // 시간 기반 조회
+    const currentTime = new Date();
+    const currentHoursMinutes = currentTime.toTimeString().slice(0, 5); // "HH:MM" 형식의 현재 시간
+
+    findArgs.$and = [
+        { open_time: { $lte: currentHoursMinutes } },   // 현재 시간이 오픈 시간 이후
+        { close_time: { $gte: currentHoursMinutes } }    // 현재 시간이 마감 시간 이전
+    ];
+
+    try {
+        const cafes = await Cafe.find(findArgs)
+            .skip(skip)
+            .limit(limit);
+
+        const totalCafes = await Cafe.countDocuments(findArgs);
+        const hasMore = skip + limit < totalCafes;
+
+        return res.status(200).json({
+            success: true,
+            cafes,
+            currentPage: page, 
+            totalPages: Math.ceil(totalCafes / limit), 
+            totalCafes, 
+            hasMore 
+        });
+    } catch (error) {
+        next(error);
     }
+
 
     // 카페 이름 검색 
     if (cafe_name) {
@@ -67,8 +89,8 @@ router.get('/:id', async (req, res, next) => {
         }
 
         //해당 카페 리뷰 가져오기
-        const reviews = await Reivew.find({ cafe_id: cafeId })
-            .populate('user_id', 'name')
+        const reviews = await Review.find({ cafe_id: cafeId })
+            .populate('writer', 'name')
             .sort({ createdAt: -1 });
 
         //카페 정보와 리뷰 정보 반환

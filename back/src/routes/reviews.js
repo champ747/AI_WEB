@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 router.post('/:cafe_id', auth, async(req, res, next) => {
     const { content, rating } = req.body;
     const cafe_id = req.params.cafe_id;
-    const user_id = req.user._id;
+    const writer = req.user._id;
 
     try {
         //리뷰 작성
@@ -15,7 +15,7 @@ router.post('/:cafe_id', auth, async(req, res, next) => {
             content,
             rating,
             cafe_id,
-            user_id
+            writer
         });
 
         await newReview.save();
@@ -33,10 +33,10 @@ router.get('/:cafe_id', async(req, res, next) => {
     try {
         //해당 카페의 리뷰 조회
         const reviews = await Review.find( { cafe_id })
-            .populate('user_id', 'name') // 작성자 이름도 함께 조회
+            .populate('writer', 'name') // 작성자 이름도 함께 조회
             .sort({ createdAt: -1 });
         
-        return res.status(200).json({ success: true, reviewes });
+        return res.status(200).json({ success: true, reviews });
     } catch(error) {
         next(error);
     }
@@ -55,7 +55,7 @@ router.put('/:review_id', auth, async (req, res, next) => {
         if (!review) return res.status(404).json({ success: false, message: 'Review not found' });
 
         //리뷰 작성자만 수정 가능
-        if(review.user_id.toString() !== user_id.toString()){
+        if(review.writer.toString() !== user_id.toString()){
             return res.status(403).json({ success: false, message: 'You can only edit your own review'});
         }
 
@@ -72,7 +72,7 @@ router.put('/:review_id', auth, async (req, res, next) => {
 
 
 //리뷰 삭제 (DELETE /reviews/:review_id)
-router.put('/:review_id', auth, async (req, res, next) => {
+router.delete('/:review_id', auth, async (req, res, next) => {
     const review_id = req.params.review_id;
     const user_id = req.user._id;
 
@@ -82,11 +82,11 @@ router.put('/:review_id', auth, async (req, res, next) => {
         if (!review) return res.status(404).json({ success: false, message: 'Review not found' });
 
         //리뷰 작성자만 삭제 가능
-        if(review.user_id.toString() !== user_id.toString()){
+        if(review.writer.toString() !== user_id.toString()){
             return res.status(403).json({ success: false, message: 'You can only delete your own review'});
         }
 
-        await review.remove();
+        await review.deleteOne();
         return res.status(200).json({ success: true, message: 'Review deleted successfully'});
     } catch (error) {
         next(error);
