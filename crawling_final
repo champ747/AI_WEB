@@ -10,80 +10,73 @@ import os
 from selenium.webdriver.common.action_chains import ActionChains
 
 
-# ChromeDriver 경로 설정
-chrome_driver_path = 'C:/chromedriver/chromedriver.exe'
-service = Service(chrome_driver_path)
-driver = webdriver.Chrome(service=service)
-
-# 크롤링할 URL (초기 페이지)
-initial_url = "https://map.naver.com/v5/search/"
 
 # 검색할 지역명 리스트
 area_names = [
-    "대구광역시 동인동 1가 카페", 
-    "대구광역시 동인동 2가 카페",
-    "대구광역시 동인동 3가 카페",
-    "대구광역시 동인동 4가 카페",
-    "대구광역시 삼덕동 1가 카페",
-    "대구광역시 삼덕동 2가 카페",
-    "대구광역시 삼덕동 3가 카페",
-    "대구광역시 성내1동 봉산동 카페",
-    "대구광역시 성내1동 동문동 카페",
-    "대구광역시 성내1동 문화동 카페",
-    "대구광역시 성내1동 공평동 카페",
-    "대구광역시 성내1동 동성로1가 카페",
-    "대구광역시 성내1동 동성로2가 카페",
-    "대구광역시 성내1동 동성로3가 카페",
-    "대구광역시 성내1동 교동 카페",
-    "대구광역시 성내1동 용덕동 카페",
-    "대구광역시 성내1동 상덕동 카페",
-    "대구광역시 성내1동 완전동 카페",
-    "대구광역시 성내1동 덕산동 카페",
-    "대구광역시 성내1동 사일동 카페",
-    "대구광역시 성내1동 남일동 카페",
-    "대구광역시 성내1동 포정동 카페",
-    "대구광역시 성내1동 태평로1가 카페",
-    "대구광역시 성내1동 화전동 카페",
-    "대구광역시 성내1동 북성로1가 카페",
-    "대구광역시 성내2동 동성로3가 카페",
-    "대구광역시 성내2동 덕산동 카페",
-    "대구광역시 성내2동 장관동 카페",
-    "대구광역시 성내2동 하서동 카페",
-    "대구광역시 성내2동 상서동 카페",
-    "대구광역시 성내2동 수동 카페",
-    "대구광역시 성내2동 남성로 카페",
-    "대구광역시 성내2동 계산동1가 카페",
-    "대구광역시 성내2동 계산동2가 카페",
-    "대구광역시 성내2동 종로1가 카페",
-    "대구광역시 성내2동 종로2가 카페",
-    "대구광역시 성내2동 남일동 카페",
-    "대구광역시 성내2동 동일동 카페",
-    "대구광역시 성내2동 전동 카페",
-    "대구광역시 성내2동 포정동 카페",
-    "대구광역시 성내2동 서문로1가 카페",
-    "대구광역시 성내2동 서내동 카페",
-    "대구광역시 성내2동 북내동 카페",
-    "대구광역시 성내2동 대안동 카페",
-    "대구광역시 성내2동 서성로1가 카페",
-    "대구광역시 성내2동 서성로2가 카페",
-    "대구광역시 성내2동 태평로2가 카페",
-    "대구광역시 성내2동 태평로3가 카페",
-    "대구광역시 성내2동 동산동 카페",
-    "대구광역시 성내2동 수창동 카페",
-    "대구광역시 성내2동 화전동 카페",
-    "대구광역시 성내2동 향촌동 카페",
-    "대구광역시 성내2동 북성로1가 카페",
-    "대구광역시 성내2동 북성로2가 카페",
-    "대구광역시 성내3동 서문로2가 카페",
-    "대구광역시 성내3동 인교동 카페",
-    "대구광역시 성내3동 서야동 카페",
-    "대구광역시 성내3동 서성로1가 카페",
-    "대구광역시 성내3동 태평로3가 카페",
-    "대구광역시 성내3동 동산동 카페",
-    "대구광역시 성내3동 시장북로 카페",
-    "대구광역시 성내3동 달성동 카페",
-    "대구광역시 성내3동 도원동 카페",
-    "대구광역시 성내3동 수창동 카페",
+    #"대구광역시 동인동 1가 카페", 
+    #"대구광역시 동인동 2가 카페",
+    #"대구광역시 동인동 3가 카페",
+    #"대구광역시 동인동 4가 카페",
+    #"대구광역시 삼덕동 1가 카페",
+    #"대구광역시 삼덕동 2가 카페",
+    #"대구광역시 삼덕동 3가 카페",
+    #"대구광역시 봉산동 카페",
+    #"대구광역시 동문동 카페",
+    #"대구광역시 문화동 카페",
+    #"대구광역시 공평동 카페",
+    #"대구광역시 동성로1가 카페",
+    #"대구광역시 동성로2가 카페",
+    #"대구광역시 동성로3가 카페",
+    #"대구광역시 교동 카페",
+    #"대구광역시 용덕동 카페",
+    #"대구광역시 상덕동 카페",
+    #"대구광역시 완전동 카페",
+    #"대구광역시 덕산동 카페",
+    #"대구광역시 사일동 카페",
+    #"대구광역시 남일동 카페",
+    #"대구광역시 포정동 카페",
+    "대구광역시 태평로1가 카페",
+    "대구광역시 화전동 카페",
+    "대구광역시 북성로1가 카페",
+    "대구광역시 동성로3가 카페",
+    "대구광역시 덕산동 카페",
+    "대구광역시 장관동 카페",
+    "대구광역시 하서동 카페",
+    "대구광역시 상서동 카페",
+    "대구광역시 수동 카페",
+    "대구광역시 남성로 카페",
+    "대구광역시 계산동1가 카페",
+    "대구광역시 계산동2가 카페",
+    "대구광역시 종로1가 카페",
+    "대구광역시 종로2가 카페",
+    "대구광역시 남일동 카페",
+    "대구광역시 동일동 카페",
+    "대구광역시 전동 카페",
+    "대구광역시 포정동 카페",
+    "대구광역시 서문로1가 카페",
+    "대구광역시 서내동 카페",
+    "대구광역시 북내동 카페",
+    "대구광역시 대안동 카페",
+    "대구광역시 서성로1가 카페",
+    "대구광역시 서성로2가 카페",
+    "대구광역시 태평로2가 카페",
+    "대구광역시 태평로3가 카페",
+    "대구광역시 동산동 카페",
+    "대구광역시 수창동 카페",
+    "대구광역시 화전동 카페",
+    "대구광역시 향촌동 카페",
+    "대구광역시 북성로1가 카페",
+    "대구광역시 북성로2가 카페",
+    "대구광역시 서문로2가 카페",
+    "대구광역시 인교동 카페",
+    "대구광역시 서야동 카페",
+    "대구광역시 서성로1가 카페",
+    "대구광역시 태평로3가 카페",
+    "대구광역시 동산동 카페",
+    "대구광역시 시장북로 카페",
+    "대구광역시 달성동 카페",
+    "대구광역시 도원동 카페",
+    "대구광역시 수창동 카페",
     "대구광역시 중구 시장북로 카페",
     "대구광역시 중구 대신동 카페",
     "대구광역시 남산1동 카페",
@@ -316,23 +309,23 @@ area_names = [
 ]
 
 # 네이버 플레이스 페이지 열기
-driver.get(initial_url)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "input_search")))
+#driver.get(initial_url)
+#WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "input_search")))
 
 # 검색어 입력 함수
-def search_for_area(area_name):
-    search_box = driver.find_element(By.CLASS_NAME, "input_search")
+def search_for_area(driver, area_name):
+    search_box = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "input_search")))
     search_box.clear()
     search_box.send_keys(area_name)
     search_box.send_keys(Keys.ENTER)
     time.sleep(5)  # 페이지 로딩 대기
-    switch_to_search_iframe()
 
 # iframe 전환 함수
-def switch_to_search_iframe():
+def switch_to_search_iframe(driver):
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "iframe#searchIframe")))
     iframe = driver.find_element(By.CSS_SELECTOR, "iframe#searchIframe")
     driver.switch_to.frame(iframe)
+
 
 # 페이지 로딩 대기
 time.sleep(5)
@@ -348,7 +341,7 @@ def load_existing_addresses(file_name):
     return set()
 
 # MVx6e 클래스를 가진 요소 두 번 클릭
-def click_before_scroll():
+def click_before_scroll(driver):
     try:
         mvx6e_element = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.CLASS_NAME, "MVx6e"))
@@ -362,7 +355,7 @@ def click_before_scroll():
         print(f"MVx6e 요소 클릭 실패: {e}")
 
 # 스크롤을 계속 내려 모든 요소 로드
-def scroll_until_no_more_tyaxT():
+def scroll_until_no_more_tyaxT(driver):
     last_count = 0
     no_change_start = time.time()
 
@@ -438,7 +431,7 @@ def clean_text(text):
     return text.replace('"', '').replace("'", "").replace("\n", " ").strip()  # 큰 따옴표와 줄바꿈 제거
 
 # 수집한 카페 정보를 클릭하여 상세 데이터 추출
-def click_and_collect_reviews():
+def click_and_collect_reviews(driver):
     elements = driver.find_elements(By.CLASS_NAME, "TYaxT")
     for element in elements:
         place_name = clean_text(element.text)  # 텍스트 정리
@@ -463,8 +456,8 @@ def click_and_collect_reviews():
             if address in collected_addresses:
                 print(f"이미 수집된 주소입니다: {address}")
                 driver.back()
-                time.sleep(3)
-                switch_to_search_iframe()
+                time.sleep(2)
+                switch_to_search_iframe(driver)
                 continue
 
             # 중복이 아니면 주소 저장
@@ -547,7 +540,7 @@ def click_and_collect_reviews():
 
             except Exception as e:
                 print(f"에러 발생: {e}")
-                parking_info = "알수없음"
+                parking_info = "알 수 없음"
             # 리뷰 탭 클릭 및 리뷰 수집
 
 
@@ -603,7 +596,7 @@ def click_and_collect_reviews():
                 print(f"리뷰와 인원 수 매칭 실패")
                 driver.back()
                 time.sleep(3)
-                switch_to_search_iframe()
+                switch_to_search_iframe(driver)
                 continue
 
             # 키워드 매칭
@@ -643,45 +636,72 @@ def click_and_collect_reviews():
             print(f"리뷰 탭 클릭 후 데이터 수집 실패: {e}")
             driver.back()
             time.sleep(3)
-            switch_to_search_iframe()
+            switch_to_search_iframe(driver)
             continue
 
         # 뒤로 가기
         driver.back()
         time.sleep(3)
-        switch_to_search_iframe()
+        switch_to_search_iframe(driver)
 
-# 페이지 버튼 순차 클릭
-def click_page_buttons():
+# 페이지 버튼 순차 클릭 및 드라이버 초기화 포함
+def click_page_buttons(driver, current_search):
     for i in range(1, 6):  # 5페이지 이하라 가정
+        click_before_scroll(driver)
+        scroll_until_no_more_tyaxT(driver)
+        click_and_collect_reviews(driver)
+
+        # 드라이버 재시작
+        driver.quit()
+        time.sleep(2)
+        driver = webdriver.Chrome(service=service)
+        driver.get(initial_url)
+        search_for_area(driver, current_search)
+        switch_to_search_iframe(driver)
+
+        # 페이지 번호 버튼들 로드 및 다음 페이지 클릭
         try:
-            click_before_scroll()  # 두 번 클릭 호출
-            scroll_until_no_more_tyaxT()  # 스크롤 호출
-            click_and_collect_reviews()
             WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a.mBN2s")))
             page_buttons = driver.find_elements(By.CSS_SELECTOR, "a.mBN2s")
-
             if i < len(page_buttons):
                 page_buttons[i].click()
-                print(f"{i+1}번 페이지로 이동")
+                print(f"{i+1}번 페이지로 이동 성공")
                 time.sleep(6)
-                driver.switch_to.default_content()
-                switch_to_search_iframe()
-                time.sleep(2)
             else:
                 print(f"{i+1}번 페이지 버튼을 찾을 수 없음.")
                 break
         except Exception as e:
             print(f"{i+1}번 페이지로 이동 실패: {e}")
             break
+    
 
-# 기존에 저장된 주소 불러오기
-collected_addresses = load_existing_addresses("cafe_reviews_test.csv")
+while(True):
+    try:
 
-# 지역별로 검색어를 바꾸며 페이지 탐색 및 데이터 수집
-for area_name in area_names:
-    search_for_area(area_name)
-    click_page_buttons()
+        # ChromeDriver 경로 설정
+        chrome_driver_path = 'C:/chromedriver/chromedriver.exe'
+        service = Service(chrome_driver_path)
+        driver = webdriver.Chrome(service=service)
 
-# 종료
-driver.quit()
+        # 크롤링할 URL (초기 페이지)
+        initial_url = "https://map.naver.com/v5/search/"
+
+        # 기존에 저장된 주소 불러오기
+        collected_addresses = load_existing_addresses("cafe_reviews_test.csv")
+
+        # 지역별로 검색어를 바꾸며 페이지 탐색 및 데이터 수집
+        for area_name in area_names:
+            print(area_name)
+            driver = webdriver.Chrome(service=service)
+            driver.get(initial_url)
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "input_search")))
+            
+            search_for_area(driver, area_name)
+            switch_to_search_iframe(driver)
+            click_page_buttons(driver, area_name)
+            #driver.quit()  # 한 지역 수집 완료 후 드라이버 종료
+
+        # 종료
+        driver.quit()
+    except:
+        driver.quit()
