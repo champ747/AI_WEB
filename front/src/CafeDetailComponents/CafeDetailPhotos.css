@@ -1,0 +1,16 @@
+.cafe-photos {
+    padding: 10px;
+  }
+  
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .photo-item {
+    width: 100%;
+    padding-top: 100%;
+    background-color: #B5B5B5;
+  }
+  
