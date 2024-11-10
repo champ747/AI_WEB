@@ -57,7 +57,7 @@ const SignupPage = () => {
           phone: phone,
           birthDate: `${birthYear}-${birthMonth.toString().padStart(2, '0')}-${birthDay.toString().padStart(2, '0')}`,
           job: selectedJob,
-          cafe_preferences: []  // 예시로 빈 배열 사용
+          cafe_preferences: []  
         })
       });
       
