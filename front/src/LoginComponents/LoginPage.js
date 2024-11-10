@@ -57,15 +57,7 @@ const LoginPage = () => {
       </button>
 
       <Link to="/signup" className="link_3">회원가입</Link>
-      
-      <button className="login-button naver">
-        <img src={naverLogo} alt="Naver" className="icon naver" />
-        <span>네이버로 로그인</span>
-      </button>
-      <button className="login-button kakao">
-        <img src={kakaoLogo} alt="Kakao" className="icon kakao" />
-        <span>카카오톡으로 로그인</span>
-      </button>
+    
     </div>
   );
 };
