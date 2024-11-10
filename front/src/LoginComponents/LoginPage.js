@@ -18,14 +18,13 @@ const LoginPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userid, password })
       });
-      
+  
       if (response.ok) {
         const data = await response.json();
         // 로그인 성공: 토큰 저장
         localStorage.setItem('token', data.user.accessToken);
         navigate('/home');
       } else {
-        // 로그인 실패 처리
         setError('아이디 또는 비밀번호가 일치하지 않습니다.');
       }
     } catch (error) {
