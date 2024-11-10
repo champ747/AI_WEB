@@ -53,30 +53,42 @@ const SignupPage = () => {
   const handleEmailChange = (e) => setEmail(e.target.value);
   
   const handleSignup = async () => {
+    // 보낼 데이터를 미리 정의합니다.
+    const signupData = {
+      userid: idValue,
+      name: name,
+      password: password,
+      gender: selectedGender === 'male' ? 'M' : 'F',
+      email: email,
+      phone: phone,
+      cafe_preferences: cafePreferences
+    };
+  
+    // 보낼 데이터를 console에 출력
+    console.log('Sending Request Body:', JSON.stringify(signupData));
+  
     try {
       const response = await fetch('https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/users/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userid: idValue,
-          password: password,
-          name: name,
-          gender: selectedGender === 'male' ? 'M' : 'F',
-          email: email,
-          phone: phone,
-          birthDate: `${birthYear}-${birthMonth.toString().padStart(2, '0')}-${birthDay.toString().padStart(2, '0')}`,
-          job: selectedJob,
-          cafe_preferences: cafePreferences 
-        })
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(signupData)
       });
-      
+  
+      console.log('Request Headers:', {
+        'Content-Type': 'application/json'
+      });
+
       if (response.ok) {
-        navigate('/login');
+        console.log('회원가입 성공');
+        navigate('/login'); 
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || '회원가입에 실패했습니다.');
+        console.error('회원가입 실패:', response.status);
+        setError('회원가입에 실패했습니다.');
       }
     } catch (error) {
+      console.error('서버 오류 발생:', error);
       setError('서버 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
