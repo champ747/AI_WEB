@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Fetch Test</title>
+</head>
+<body>
+    <h1>Fetched Data</h1>
+    <pre id="data"></pre> <!-- <pre> 태그를 사용하여 보기 쉽게 변경 -->
+
+    <script>
+        const userInput = {
+            "categories": [  "경치가 좋은", "조용한", "넓은",  "인테리어 예쁜", "사람 많은", "사진찍기 좋은" ]
+        };
+
+        fetch('https://port-0-flask-m39ixlhha27ce70c.sel4.cloudtype.app/api/recommend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userInput)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('data').innerText = JSON.stringify(data, null, 2);
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            document.getElementById('data').innerText = `Error fetching data: ${error.message}`;
+        });
+    </script>
+</body>
+</html>
