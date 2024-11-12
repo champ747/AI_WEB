@@ -13,17 +13,88 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [homecafelist, setHomecafelist] = useState([]);
   const [likedItems, setLikedItems] = useState({});
+  const [categoriesInput, setCategoriesInput] = useState({ categories: [] });
 
-  // 찜 목록을 가져오는 함수
+  // 토큰 유효성 검사
+  const getToken = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      navigate('/login');
+      return null;
+    }
+    return token;
+  };
+ 
+  // 카테고리 인풋 데이터
+  const fetchUserPreferences = async () => {
+    const token = getToken();
+    if (!token) return;
+  
+    try {
+      const response = await fetch('https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/users/auth', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setCategoriesInput({ categories: data.cafe_preferences || [] });
+      } else if (response.status === 401) {
+        console.error('인증 실패: 다시 로그인 필요');
+        localStorage.removeItem('token');
+        navigate('/login');
+      } else {
+        console.error('사용자 정보를 가져오는 데 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('사용자 선호 키워드를 가져오는 중 오류 발생:', error);
+    }
+  };
+
+  // 카페 목록 가져오기
+  const fetchCafes = async () => {
+    try {
+      const response = await fetch('https://port-0-flask-m39ixlhha27ce70c.sel4.cloudtype.app/api/recommend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(categoriesInput)
+      });
+
+      const data = await response.json();
+
+      // API 응답이 배열인지 확인 후 설정
+      if (Array.isArray(data)) {
+        setHomecafelist(data);
+      } else if (data.home && Array.isArray(data.home)) {
+        setHomecafelist(data.home);
+      } else {
+        console.error('카페 목록 형식이 올바르지 않습니다.');
+      }
+    } catch (error) {
+      console.error('카페 목록을 불러오는 중 오류 발생:', error);
+    }
+  };
+
+  // 찜 목록 가져오기
   const fetchFavorites = async () => {
+    const token = getToken();
+    if (!token) return;
+  
     try {
       const response = await fetch('https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/favorites', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${token}`
         }
       });
+  
       const data = await response.json();
       if (data.success) {
         const favoritesMap = data.favorites.reduce((acc, item) => {
@@ -31,29 +102,15 @@ const HomePage = () => {
           return acc;
         }, {});
         setLikedItems(favoritesMap);
+      } else {
+        console.error('찜 목록을 불러오는 데 실패했습니다.');
       }
     } catch (error) {
       console.error('찜 목록을 불러오는 중 오류 발생:', error);
     }
   };
 
-  // 카페 목록 가져오기
-  useEffect(() => {
-    const fetchCafes = async () => {
-      try {
-        const response = await fetch('http://localhost:5001/home');
-        const data = await response.json();
-        setHomecafelist(data.home || []);
-      } catch (error) {
-        console.error('카페 목록을 불러오는 중 오류 발생:', error);
-      }
-    };
-
-    fetchCafes();
-    fetchFavorites();
-  }, []);
-
-  // 찜 상태 변경 함수
+  // 찜 상태 토글
   const toggleLike = async (cafeId) => {
     const updatedLikedStatus = !likedItems[cafeId];
     setLikedItems((prev) => ({
@@ -77,6 +134,16 @@ const HomePage = () => {
       console.error('찜 상태 업데이트 중 오류 발생:', error);
     }
   };
+
+  // 컴포넌트 마운트 시 사용자 선호 키워드와 카페 목록 가져오기
+  useEffect(() => {
+    const initializeData = async () => {
+      await fetchUserPreferences();
+      await fetchFavorites();
+      await fetchCafes();
+    };
+    initializeData();
+  }, [categoriesInput]);
 
   const goToMyPage = () => {
     navigate('/mypage');
@@ -109,46 +176,50 @@ const HomePage = () => {
       <button className="chatbot-search" onClick={goToChatbotSearch}>챗봇으로 카페 찾기</button>
 
       <div className="homecafelist-items">
-        {homecafelist.map((cafe) => (
-          <div
-            key={cafe.id}
-            className="homecafelist-box"
-            onClick={(e) => {
-              if (!e.target.closest('.homecafelist-icon-heart') && !e.target.closest('.homecafelist-icon-share')) {
-                goToCafeDetail(cafe.id);
-              }
-            }}
-          >
-            <div className="homecafelist-image-container">
-              {cafe.image && <img src={cafe.image} alt={cafe.name} className="homecafelist-cafe-image" />}
-            </div>
-
-            <div className="homecafelist-info">
-              <div className="homecafelist-info-name">
-                <span className={cafe.name.length > 14 ? 'long-text' : ''}>{cafe.name}</span>
-              </div>
-              <div>
-                <img src={starIcon} alt="Star" className="homecafelist-star-icon" />
-                <div className="homecafelist-info-rating">{cafe.rating.toFixed(1)}</div>
-                <div className="homecafelist-info-review">리뷰 {cafe.reviews > 999 ? '999+' : cafe.reviews}개</div>
-              </div>
-              <div className="homecafelist-info-location">{cafe.location}</div>
-            </div>
-
-            <div className="homecafelist-icons">
-              <img src={shareIcon} alt="Share" className="homecafelist-icon-share" onClick={(e) => e.stopPropagation()} />
-            </div>
-            <img
-              src={likedItems[cafe.id] ? filledHeartIcon : emptyHeartIcon}
-              alt="Heart"
-              className="homecafelist-icon-heart"
+        {homecafelist.length > 0 ? (
+          homecafelist.map((cafe, index) => (
+            <div
+              key={index}
+              className="homecafelist-box"
               onClick={(e) => {
-                e.stopPropagation();
-                toggleLike(cafe.id);
+                if (!e.target.closest('.homecafelist-icon-heart') && !e.target.closest('.homecafelist-icon-share')) {
+                  goToCafeDetail(cafe.id);
+                }
               }}
-            />
-          </div>
-        ))}
+            >
+              <div className="homecafelist-image-container">
+                {cafe.image && <img src={cafe.image} alt={cafe.name} className="homecafelist-cafe-image" />}
+              </div>
+
+              <div className="homecafelist-info">
+                <div className="homecafelist-info-name">
+                  <span className={cafe.name.length > 8 ? 'long-text' : ''}>{cafe.name}</span>
+                </div>
+                <div>
+                  <img src={starIcon} alt="Star" className="homecafelist-star-icon" />
+                  <div className="homecafelist-info-rating">{cafe.rating.toFixed(1)}</div>
+                  <div className="homecafelist-info-review">리뷰 {cafe.reviews > 999 ? '999+' : cafe.reviews}개</div>
+                </div>
+                <div className="homecafelist-info-location">{cafe.location}</div>
+              </div>
+
+              <div className="homecafelist-icons">
+                <img src={shareIcon} alt="Share" className="homecafelist-icon-share" onClick={(e) => e.stopPropagation()} />
+              </div>
+              <img
+                src={likedItems[cafe.id] ? filledHeartIcon : emptyHeartIcon}
+                alt="Heart"
+                className="homecafelist-icon-heart"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleLike(cafe.id);
+                }}
+              />
+            </div>
+          ))
+        ) : (
+          <p>카페 목록이 없습니다.</p>
+        )}
       </div>
     </div>
   );
