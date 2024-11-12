@@ -40,7 +40,6 @@
 
 /* 키워드 섹션 */
 .keyword-section2 {
-    margin-top: 80px;
     padding-top: 94px;
 }
 
@@ -50,7 +49,6 @@
     flex-wrap: wrap;
     gap: 13px;
     margin-left: 34px;
-    margin-top: 50px;
 }
 
 /* 키워드 스타일 */
