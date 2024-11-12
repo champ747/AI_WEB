@@ -54,8 +54,9 @@ const HomePage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        setCategoriesInput({ categories: data.cafe_preferences });
         if (data.cafe_preferences) {
-          setCategoriesInput({ categories: data.cafe_preferences });
+          console.log(categoriesInput);
         } else {
           setError('사용자 선호 키워드를 찾을 수 없습니다.');
         }
@@ -75,8 +76,8 @@ const HomePage = () => {
 
   // 카페 목록 가져오기
   const fetchCafes = async () => {
-    if (categoriesInput.categories.length === 0) {
-      setError('카페 선호 키워드를 불러오지 못했습니다.');
+    if (categoriesInput.categories.length === 6) {
+      setError('카페 선호 키워드를 불러왔습니다.');
       return;
     }
 
