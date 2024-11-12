@@ -21,15 +21,21 @@ const KeywordSearchPage = () => {
 
   const handleRecommendClick = async () => {
     try {
-      const response = await fetch('https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/api/recommend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ keywords: selectedKeywords })
-      });
+      const category = selectedKeywords.join(',');
+      const limit = 10; // 페이지당 항목 수
+      const page = 1; // 기본 페이지 설정
+
+      const response = await fetch(
+        `https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/cafes/search?category=${encodeURIComponent(category)}&limit=${limit}&page=${page}`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        navigate('/search-results', { state: { results: data.results } });
+        navigate('/search-results', { state: { results: data.cafes } });
       } else {
         setError('추천 결과를 불러오는 데 실패했습니다.');
       }
