@@ -15,19 +15,14 @@ const SearchResults = () => {
   const [likedItems, setLikedItems] = useState({});
   const [error, setError] = useState('');
 
-  // latitude와 longitude는 props로 전달받거나, location.state를 통해 전달된 값 사용
-  const { latitude, longitude, selectedKeywords } = location.state || { 
-    latitude: 35.8714, 
-    longitude: 128.6014, 
-    selectedKeywords: [] 
-  };
+  // location.state에서 카테고리를 가져오거나 기본값 설정
+  const { category } = location.state || { category: '경치가 좋은' };
 
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        const category = selectedKeywords.join(','); // 선택된 키워드를 ','로 연결
         const response = await fetch(
-          `https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/recommend/cafes/search?category=${encodeURIComponent(category)}&latitude=${latitude}&longitude=${longitude}&limit=10&page=1`
+          `https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/recommend/cafes/search?category=${encodeURIComponent(category)}`
         );
 
         if (!response.ok) {
@@ -35,7 +30,7 @@ const SearchResults = () => {
         }
 
         const data = await response.json();
-        setSearchResults(data.cafes);
+        setSearchResults(data.cafes); // 'cafes'에 필요한 정보가 들어있다고 가정합니다.
 
         const initialLikes = data.cafes.reduce((acc, item) => {
           acc[item._id] = false; 
@@ -49,7 +44,7 @@ const SearchResults = () => {
     };
 
     fetchSearchResults();
-  }, [latitude, longitude, selectedKeywords]);
+  }, [category]);
 
   const toggleLike = (id) => {
     setLikedItems((prev) => ({
@@ -80,7 +75,7 @@ const SearchResults = () => {
       <img src={logo} alt="Cafe ChuChu" className="search-results-logo" onClick={goToHome} />
       <img src={myPageIcon} alt="My Page" className="search-results_menu-icon" onClick={goToMyPage} />
 
-      {/* 키워드 선택하기 & 챗봇에게 물어보기 버튼 */}
+      {/* 키워드 선택하기 & 챗봇 검색 버튼 */}
       <div className="search-results-buttons">
         <button className="keyword-search-button" onClick={goToKeywordSearch}>키워드 선택하기</button>
         <button className="chatbot-search-button" onClick={goToChatbotSearch}>챗봇에게 물어보기</button>
@@ -94,32 +89,25 @@ const SearchResults = () => {
         {searchResults.map((cafe) => (
           <div key={cafe._id} className="search-results-box">
             <div className="search-results-image-container">
-              {cafe.image && (
+              {cafe.image ? (
                 <img
                   src={cafe.image}
-                  alt=""
+                  alt={cafe.name}
                   className="search-results-cafe-image"
                 />
+              ) : (
+                <div className="search-results-no-image">이미지 없음</div>
               )}
             </div>
 
             <div className="search-results-info">
-              <div className="search-results-info-name">{cafe.cafe_name}</div>
-              <div>
-                <img src={starIcon} alt="Star" className="search-results-star-icon" />
-                <div className="search-results-info-rating">
-                  {cafe.averageRating !== null && cafe.averageRating !== undefined 
-                    ? cafe.averageRating.toFixed(1) 
-                    : 'N/A'}
-                </div>
-                <div className="search-results-info-review"> 리뷰 {cafe.reviews > 999 ? '999+' : cafe.reviews}개 </div>
-              </div>
-              <div className={cafe.status === '영업 중' ? 'search-results-info-status_open' : 'search-results-info-status_close'}>
-                {cafe.status}
-              </div>
-              <div className="search-results-line"></div>
+              <div className="search-results-info-name">{cafe.name}</div>
               <div className="search-results-info-location">{cafe.location}</div>
-              <div className="search-results-info-distance">거리: {cafe.distance ? cafe.distance.toFixed(1) + ' km' : 'N/A'}</div>
+              <div className="search-results-info-rating">
+                {cafe.averageRating !== null && cafe.averageRating !== undefined 
+                  ? `${cafe.averageRating.toFixed(1)}`
+                  : 'N/A'}
+              </div>
             </div>
 
             <div className="search-results-icons">
