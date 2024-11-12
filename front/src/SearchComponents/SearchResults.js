@@ -109,4 +109,24 @@ const SearchResults = () => {
                 {cafe.status}
               </div>
               <div className="search-results-line"></div>
-              <div className="search-results-info-location">{c
+              <div className="search-results-info-location">{cafe.location}</div>
+              <div className="search-results-info-distance">거리: {cafe.distance.toFixed(1)} km</div>
+            </div>
+
+            <div className="search-results-icons">
+              <img src={shareIcon} alt="Share" className="search-results-icon-share" />
+            </div>
+            <img
+              src={likedItems[cafe._id] ? filledHeartIcon : emptyHeartIcon}
+              alt="Heart"
+              className="search-results-icon-heart"
+              onClick={() => toggleLike(cafe._id)}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default SearchResults;
