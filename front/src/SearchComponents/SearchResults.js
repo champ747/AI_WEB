@@ -15,13 +15,19 @@ const SearchResults = () => {
   const [likedItems, setLikedItems] = useState({});
   const [error, setError] = useState('');
 
-  const { latitude, longitude } = location.state || { latitude: 35.8714, longitude: 128.6014 };
+  // latitude와 longitude는 props로 전달받거나, location.state를 통해 전달된 값 사용
+  const { latitude, longitude, selectedKeywords } = location.state || { 
+    latitude: 35.8714, 
+    longitude: 128.6014, 
+    selectedKeywords: [] 
+  };
 
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
+        const category = selectedKeywords.join(','); // 선택된 키워드를 ','로 연결
         const response = await fetch(
-          `https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/cafes/search?sortByProximity=true&latitude=${latitude}&longitude=${longitude}&limit=10&page=1`
+          `https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/recommend/cafes/search?category=${encodeURIComponent(category)}&latitude=${latitude}&longitude=${longitude}&limit=10&page=1`
         );
 
         if (!response.ok) {
@@ -43,7 +49,7 @@ const SearchResults = () => {
     };
 
     fetchSearchResults();
-  }, [latitude, longitude]);
+  }, [latitude, longitude, selectedKeywords]);
 
   const toggleLike = (id) => {
     setLikedItems((prev) => ({
@@ -98,7 +104,7 @@ const SearchResults = () => {
             </div>
 
             <div className="search-results-info">
-              <div className="search-results-info-name">{cafe.name}</div>
+              <div className="search-results-info-name">{cafe.cafe_name}</div>
               <div>
                 <img src={starIcon} alt="Star" className="search-results-star-icon" />
                 <div className="search-results-info-rating">
