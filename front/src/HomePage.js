@@ -76,10 +76,6 @@ const HomePage = () => {
 
   // 카페 목록 가져오기
   const fetchCafes = async () => {
-    if (categoriesInput.categories.length === 6) {
-      setError('카페 선호 키워드를 불러왔습니다.');
-      return;
-    }
 
     try {
       const response = await fetch('https://port-0-flask-m39ixlhha27ce70c.sel4.cloudtype.app/api/recommend', {
@@ -104,7 +100,6 @@ const HomePage = () => {
       }
     } catch (error) {
       console.error('카페 목록 가져오기 오류:', error);
-      setError('서버 오류로 인해 카페 목록을 불러오지 못했습니다.');
     }
   };
 
@@ -191,29 +186,46 @@ const HomePage = () => {
       {error && <p className="error-message">{error}</p>}
       
       <div className="homecafelist-items">
-        {homecafelist.length > 0 ? (
-          homecafelist.map((cafe, index) => (
-            <div key={index} className="homecafelist-box" onClick={() => goToCafeDetail(cafe.id)}>
-              <img src={cafe.image} alt={cafe.name} className="homecafelist-cafe-image" />
-              <div className="homecafelist-info">
-                <div className="homecafelist-info-name">{cafe.name}</div>
-                <div>{cafe.rating.toFixed(1)}</div>
-                <div>리뷰 {cafe.reviews}개</div>
-              </div>
-              <img
-                src={likedItems[cafe.id] ? filledHeartIcon : emptyHeartIcon}
-                alt="Heart"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleLike(cafe.id);
-                }}
-                className="homecafelist-icon-heart"
-              />
+        {homecafelist.map((cafe) => (
+          <div
+            key={cafe.id}
+            className="homecafelist-box"
+            onClick={(e) => {
+              if (!e.target.closest('.homecafelist-icon-heart') && !e.target.closest('.homecafelist-icon-share')) {
+                goToCafeDetail(cafe.id);
+              }
+            }}
+          >
+            <div className="homecafelist-image-container">
+              {cafe.image && <img src={cafe.image} alt={cafe.name} className="homecafelist-cafe-image" />}
             </div>
-          ))
-        ) : (
-          <p>카페 목록이 없습니다.</p>
-        )}
+
+            <div className="homecafelist-info">
+              <div className="homecafelist-info-name">
+                <span className={cafe.name.length > 14 ? 'long-text' : ''}>{cafe.name}</span>
+              </div>
+              <div>
+                <img src={starIcon} alt="Star" className="homecafelist-star-icon" />
+                <div className="homecafelist-info-rating">{cafe.rating}</div>
+                <div className="homecafelist-info-review">리뷰 {cafe.reviews > 999 ? '999+' : cafe.reviews}개</div>
+              </div>
+              <div className="homecafelist-info-location">{cafe.location}</div>
+            </div>
+
+            <div className="homecafelist-icons">
+              <img src={shareIcon} alt="Share" className="homecafelist-icon-share" onClick={(e) => e.stopPropagation()} />
+            </div>
+            <img
+              src={likedItems[cafe.id] ? filledHeartIcon : emptyHeartIcon}
+              alt="Heart"
+              className="homecafelist-icon-heart"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleLike(cafe.id);
+              }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
