@@ -21,9 +21,15 @@ const LoginPage = () => {
   
       if (response.ok) {
         const data = await response.json();
-        // 로그인 성공: 토큰 저장
-        localStorage.setItem('token', data.user.accessToken);
-        navigate('/home');
+        
+        // 로그인 성공 시 토큰 저장 확인
+        if (data.user && data.user.accessToken) {
+          console.log("토큰 저장:", data.user.accessToken);
+          localStorage.setItem('token', data.user.accessToken);
+          navigate('/home');
+        } else {
+          setError('토큰을 가져오는 데 실패했습니다.');
+        }
       } else {
         setError('아이디 또는 비밀번호가 일치하지 않습니다.');
       }
@@ -31,7 +37,7 @@ const LoginPage = () => {
       console.error('서버 오류:', error);
       setError('서버 오류가 발생했습니다. 다시 시도해주세요.');
     }
-  };
+  };   
 
   return (
     <div className="login-container">
