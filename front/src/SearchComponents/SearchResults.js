@@ -15,8 +15,7 @@ const SearchResults = () => {
   const [likedItems, setLikedItems] = useState({});
   const [error, setError] = useState('');
 
-  // latitude와 longitude는 props로 전달받거나, location.state를 통해 전달된 값 사용
-  const { latitude, longitude } = location.state || { latitude: 35.8714, longitude: 128.6014 }; // 기본값은 대구 좌표
+  const { latitude, longitude } = location.state || { latitude: 35.8714, longitude: 128.6014 };
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -102,7 +101,11 @@ const SearchResults = () => {
               <div className="search-results-info-name">{cafe.name}</div>
               <div>
                 <img src={starIcon} alt="Star" className="search-results-star-icon" />
-                <div className="search-results-info-rating">{cafe.averageRating.toFixed(1)}</div>
+                <div className="search-results-info-rating">
+                  {cafe.averageRating !== null && cafe.averageRating !== undefined 
+                    ? cafe.averageRating.toFixed(1) 
+                    : 'N/A'}
+                </div>
                 <div className="search-results-info-review"> 리뷰 {cafe.reviews > 999 ? '999+' : cafe.reviews}개 </div>
               </div>
               <div className={cafe.status === '영업 중' ? 'search-results-info-status_open' : 'search-results-info-status_close'}>
@@ -110,7 +113,7 @@ const SearchResults = () => {
               </div>
               <div className="search-results-line"></div>
               <div className="search-results-info-location">{cafe.location}</div>
-              <div className="search-results-info-distance">거리: {cafe.distance.toFixed(1)} km</div>
+              <div className="search-results-info-distance">거리: {cafe.distance ? cafe.distance.toFixed(1) + ' km' : 'N/A'}</div>
             </div>
 
             <div className="search-results-icons">
