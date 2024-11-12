@@ -73,3 +73,14 @@ def recommend_cafes(user_preferences):
     # 결과 출력
     print("Top 30 Cafe Recommendations:", recommendations)
     return recommendations
+
+
+'''
+서버 코드 테스트
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "categories": ["사진찍기 좋은", "사람 많은", "넓은", "조용한", "경치가 좋은", "인테리어 예쁜"]
+}' https://port-0-flask-m39ixlhha27ce70c.sel4.cloudtype.app/api/recommend
+
+
+'''
