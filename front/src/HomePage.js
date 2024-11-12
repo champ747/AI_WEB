@@ -57,6 +57,7 @@ const HomePage = () => {
         setCategoriesInput({ categories: data.cafe_preferences });
         if (data.cafe_preferences) {
           console.log(categoriesInput);
+          await fetchCafes({ categories: data.cafe_preferences }); // 사용자 선호 키워드를 가져온 후 카페 목록 가져오기
         } else {
           setError('사용자 선호 키워드를 찾을 수 없습니다.');
         }
@@ -75,8 +76,7 @@ const HomePage = () => {
   };
 
   // 카페 목록 가져오기
-  const fetchCafes = async () => {
-
+  const fetchCafes = async (categoriesInput) => {
     try {
       const response = await fetch('https://port-0-flask-m39ixlhha27ce70c.sel4.cloudtype.app/api/recommend', {
         method: 'POST',
@@ -161,10 +161,9 @@ const HomePage = () => {
     const initializeData = async () => {
       await fetchUserPreferences();
       await fetchFavorites();
-      await fetchCafes();
     };
     initializeData();
-  }, [categoriesInput]);
+  }, []);
 
   const goToMyPage = () => navigate('/mypage');
   const goToKeywordSearch = () => navigate('/keyword-search');
@@ -197,19 +196,19 @@ const HomePage = () => {
             }}
           >
             <div className="homecafelist-image-container">
-              {cafe.image && <img src={cafe.image} alt={cafe.name} className="homecafelist-cafe-image" />}
+              {cafe.image_url && <img src={cafe.image_url} alt={cafe.name} className="homecafelist-cafe-image" />}
             </div>
 
             <div className="homecafelist-info">
               <div className="homecafelist-info-name">
-                <span className={cafe.name.length > 14 ? 'long-text' : ''}>{cafe.name}</span>
+                <span className={cafe.name.length > 10 ? 'long-text' : ''}>{cafe.name}</span>
               </div>
               <div>
                 <img src={starIcon} alt="Star" className="homecafelist-star-icon" />
                 <div className="homecafelist-info-rating">{cafe.rating}</div>
                 <div className="homecafelist-info-review">리뷰 {cafe.reviews > 999 ? '999+' : cafe.reviews}개</div>
               </div>
-              <div className="homecafelist-info-location">{cafe.location}</div>
+              <div className="homecafelist-info-location">{cafe.address}</div>
             </div>
 
             <div className="homecafelist-icons">
