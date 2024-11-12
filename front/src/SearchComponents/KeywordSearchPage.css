@@ -24,10 +24,11 @@
     color: #878787;
     left: 41px;
     top: 19px;
-    margin:  0;
+    margin: 0;
 }
 
-.keyword-type1 {
+/* 분위기 키워드 제목 */
+.keyword-type2 {
     position: absolute;
     font-size: 24px;
     color: #674D42;
@@ -37,32 +38,10 @@
     font-weight: normal;
 }
 
-.keyword-line {
-    width: 334px;
-    height: 1px;
-    position: absolute;
-    left: 31px;
-    top: 256px;
-    background: #674D42;
-}
-
-.keyword-type2 {
-    position: absolute;
-    font-size: 24px;
-    color: #674D42;
-    left: 34px;
-    top: 271px;
-    margin: 0;
-    font-weight: normal;
-}
-
 /* 키워드 섹션 */
-.keyword-section1 {
-    padding-top: 94px;
-}
-
 .keyword-section2 {
     margin-top: 80px;
+    padding-top: 94px;
 }
 
 /* 키워드 그룹 */
@@ -71,6 +50,7 @@
     flex-wrap: wrap;
     gap: 13px;
     margin-left: 34px;
+    margin-top: 50px;
 }
 
 /* 키워드 스타일 */
