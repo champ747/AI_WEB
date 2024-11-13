@@ -56,8 +56,8 @@ const HomePage = () => {
         const data = await response.json();
         setCategoriesInput({ categories: data.cafe_preferences });
         if (data.cafe_preferences) {
-          console.log(categoriesInput);
-          await fetchCafes({ categories: data.cafe_preferences }); // 사용자 선호 키워드를 가져온 후 카페 목록 가져오기
+          
+          await fetchCafes({ categories: data.cafe_preferences }); 
         } else {
           setError('사용자 선호 키워드를 찾을 수 없습니다.');
         }
@@ -77,6 +77,7 @@ const HomePage = () => {
 
   // 카페 목록 가져오기
   const fetchCafes = async (categoriesInput) => {
+    console.log(categoriesInput);
     try {
       const response = await fetch('https://port-0-flask-m39ixlhha27ce70c.sel4.cloudtype.app/api/recommend', {
         method: 'POST',
