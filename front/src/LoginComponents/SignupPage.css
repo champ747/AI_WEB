@@ -21,15 +21,16 @@
 /* 오류 메시지 스타일 */
 .error-message {
     position: fixed; /* 화면에 고정 */
-    top: 10px;
+    top: 0px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-100%);
     color: #FF3B30; 
-    padding: 10px 20px;
+    padding: 0px;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 15px;
     font-family: 'Cafe24 Dongdong';
     z-index: 1000;
+    margin: 0px;
 }  
   
 /* 입력 폼 라벨 */
