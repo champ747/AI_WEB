@@ -50,9 +50,43 @@ const SignupPage = () => {
   const handleBirthDayChange = (e) => setBirthDay(e.target.value);
   const handleNameChange = (e) => setName(e.target.value);
   const handlePhoneChange = (e) => setPhone(e.target.value);
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  
+  const handleEmailChange = (e) => setEmail(e.target.value); 
+
+  const keywords = ['사진찍기 좋은', '사람 많은', '조용한', '경치가 좋은', '넓은', '인테리어 예쁜'];
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+
+  const handleKeywordClick = (keyword) => {
+    if (!selectedKeywords.includes(keyword) && selectedKeywords.length < 6) {
+      setSelectedKeywords([...selectedKeywords, keyword]);
+    }
+  };
+
+  const handleRemoveKeyword = (index) => {
+    const newKeywords = [...selectedKeywords];
+    newKeywords.splice(index, 1);
+    setSelectedKeywords(newKeywords);
+  };
+
+  const isFormComplete = () => {
+    return (
+      idValue &&
+      password &&
+      passwordCheck &&
+      isPasswordMatched &&
+      name &&
+      selectedGender &&
+      phone &&
+      email &&
+      selectedKeywords.length > 0
+    );
+  };
+
   const handleSignup = async () => {
+    if (!isFormComplete()) {
+      setError('모든 입력 항목을 완료해주세요.');
+      return;
+    }
+
     const signupData = {
       userid: idValue,
       name: name,
@@ -60,11 +94,9 @@ const SignupPage = () => {
       gender: selectedGender === 'male' ? 'M' : 'F',
       email: email,
       phone: phone,
-      cafe_preferences: cafePreferences
+      cafe_preferences: selectedKeywords
     };
-  
-    console.log('Sending Request Body:', JSON.stringify(signupData));
-  
+
     try {
       const response = await fetch('https://port-0-back-m341pqyi646021b2.sel4.cloudtype.app/users/register', {
         method: 'POST',
@@ -73,16 +105,10 @@ const SignupPage = () => {
         },
         body: JSON.stringify(signupData)
       });
-  
-      console.log('Request Headers:', {
-        'Content-Type': 'application/json'
-      });
 
       if (response.ok) {
-        console.log('회원가입 성공');
-        navigate('/login'); 
-      } 
-      else {
+        navigate('/login');
+      } else {
         const errorData = await response.json();
         setError(errorData.message || '회원가입에 실패했습니다.');
       }
@@ -118,33 +144,47 @@ const SignupPage = () => {
       <button className={`female-button ${selectedGender === 'female' ? 'select-female-button' : ''}`} onClick={() => handleGenderSelect('female')}></button>
       <span className={`female-button_span ${selectedGender === 'female' ? 'select-female-button_span' : ''}`} onClick={() => handleGenderSelect('female')}>여</span>
 
-      <p className="text-birth">생년월일</p>
-      <input type="number" min="1900" max="2050" value={birthYear} onChange={handleBirthYearChange} className="input-box_birth_year" />
-      <p className="text-birth_year">년</p>
-      <input type="number" min="1" max="12" value={birthMonth} onChange={handleBirthMonthChange} className="input-box_birth_month" />
-      <p className="text-birth_month">월</p>
-      <input type="number" min="1" max="31" value={birthDay} onChange={handleBirthDayChange} className="input-box_birth_day" />
-      <p className="text-birth_day">일</p>
-
       <p className="text-phonenumber">전화번호</p>
       <input type="tel" className="input-box_phonenumber" value={phone} onChange={handlePhoneChange} />
 
       <p className="text-email">이메일</p>
       <input type="email" className="input-box_email" value={email} onChange={handleEmailChange} />
 
-      <p className="text-job">직업</p>
-      <button className={`job_O-button ${selectedJob === '직장O' ? 'select-job_O-button' : ''}`} onClick={() => handleJobSelect('직장O')}>직장 O</button>
-      <button className={`job_X-button ${selectedJob === '직장X' ? 'select-job_X-button' : ''}`} onClick={() => handleJobSelect('직장X')}>직장 X</button>
-      <button className={`job_student-button ${selectedJob === '학생' ? 'select-job_student-button' : ''}`} onClick={() => handleJobSelect('학생')}>학생</button>
+      <p className="text-cafe_preference">선호하는 키워드 순위</p>
+      <p className="text-1">1</p>
+      <p className="text-2">2</p>
+      <p className="text-3">3</p>
+      <p className="text-4">4</p>
+      <p className="text-5">5</p>
+      <p className="text-6">6</p>
 
-      <p className="text-cafe_preference">카페 선호도 선택</p>
-      <button className={`preference_c-button ${cafePreferences.includes('cozy') ? 'select-preference_c-button' : ''}`} onClick={() => handleCafePreferenceClick('cozy')}>아늑한</button>
-      <button className={`preference_m-button ${cafePreferences.includes('modern') ? 'select-preference_m-button' : ''}`} onClick={() => handleCafePreferenceClick('modern')}>모던한</button>
-      
+      <div className="ranking-box">
+        {[...Array(6)].map((_, index) => (
+          <div
+            key={index}
+            className={`ranking-slot ${selectedKeywords[index] ? 'filled' : ''}`}
+            onClick={() => handleRemoveKeyword(index)}
+          >
+            {selectedKeywords[index] || ''}
+          </div>
+        ))}
+      </div>
+
+      <div className="signup-keyword_buttons">
+        {keywords.map((keyword, index) => (
+          <button
+            key={index}
+            onClick={() => handleKeywordClick(keyword)}
+            className={`signup-keyword_button ${selectedKeywords.includes(keyword) ? 'selected' : ''}`}
+          >
+            {keyword}
+          </button>
+        ))}
+      </div>
 
       {error && <p className="error-message">{error}</p>}
       
-      <button className="signup-button" onClick={handleSignup}>회원가입 하기</button>
+      <button className={isFormComplete() ? 'signup-button_O' : 'signup-button_X'} onClick={handleSignup}>회원가입 하기</button>
     </div>
   );
 };
