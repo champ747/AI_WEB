@@ -1,0 +1,36 @@
+.reviews-container {
+  padding: 20px;
+  font-family: 'Cafe24 Dongdong';
+}
+
+h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #674D42;
+}
+
+.review-list {
+  margin-top: 10px;
+}
+
+.review-item {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 0;
+}
+
+.review-item p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.review-item .review-rating {
+  display: flex;
+  align-items: center;
+}
+
+.review-item .review-rating img {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+}
