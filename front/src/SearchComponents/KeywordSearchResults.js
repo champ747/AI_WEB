@@ -31,7 +31,6 @@ const SearchResults = () => {
 
         const data = await response.json();
         setSearchResults(data.cafes); // 'cafes'에 필요한 정보가 들어있다고 가정합니다.
-
         const initialLikes = data.cafes.reduce((acc, item) => {
           acc[item._id] = false; 
           return acc;
