@@ -1,0 +1,67 @@
+# 학습 설정
+training_args = TrainingArguments(
+    output_dir="./results",
+    num_train_epochs=3,
+    per_device_train_batch_size=4,
+    per_device_eval_batch_size=4,
+    warmup_steps=500,
+    weight_decay=0.01,
+    logging_dir="./logs",
+    logging_steps=10,
+    evaluation_strategy="epoch",
+    save_strategy="epoch",
+)
+
+ver1
+학습 데이터는 "EbanLee/kobart-summary-v3"로 나온 결과
+    ROUGE-1   ROUGE-2   ROUGE-L  Average BLEU  BERTScore Precision  BERTScore Recall  BERTScore F1
+0  0.059134  0.014653  0.057388      0.002038             0.631978          0.670742      0.650377
+
+
+
+
+
+# 학습 설정
+training_args = TrainingArguments(
+    output_dir="./results",
+    num_train_epochs=3,
+    per_device_train_batch_size=4,
+    per_device_eval_batch_size=4,
+    warmup_steps=500,
+    weight_decay=0.01,
+    logging_dir="./logs",
+    logging_steps=10,
+    evaluation_strategy="epoch",
+    save_strategy="epoch",
+)
+
+
+ver2
+학습 데이터는 "translated_refined_data_with_gpt.csv"
+    ROUGE-1  ROUGE-2   ROUGE-L  Average BLEU  BERTScore Precision  BERTScore Recall  BERTScore F1
+0  0.057689  0.01296  0.055619      0.002027             0.632052          0.671244      0.650652
+
+
+
+
+# 학습 설정
+training_args = TrainingArguments(
+    output_dir="./results",
+    num_train_epochs=10,
+    per_device_train_batch_size=4,
+    per_device_eval_batch_size=4,
+    warmup_steps=500,
+    weight_decay=0.01,
+    logging_dir="./logs",
+    logging_steps=10,
+    evaluation_strategy="epoch",
+    save_strategy="epoch",
+)
+
+
+ver3
+학습 데이터는 "translated_refined_data_with_gpt.csv"
+    ROUGE-1   ROUGE-2   ROUGE-L  Average BLEU  BERTScore Precision  BERTScore Recall  BERTScore F1
+0  0.056673  0.012934  0.054884      0.002044              0.63189          0.671382      0.650632
+
+
