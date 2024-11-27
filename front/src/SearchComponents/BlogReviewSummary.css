@@ -1,0 +1,119 @@
+/* 내돈내산 리뷰 요약 모음 화면 */
+.blog-summary-container {
+    position: relative;
+    width: 375px;
+    height: 844px;
+    margin: 0 auto;
+    background: #ffffff;
+    font-family: 'Cafe24 Dongdong'; 
+    padding-top: 38px;
+    padding-left: 15px;
+}
+
+/* 로고 스타일 */
+.blog-summary-logo {
+    position: absolute;
+    top: 16px;
+    left: 15px;
+    width: 52.51px;
+    height: 22.34px;
+    cursor: pointer;
+}
+
+/* 설명 텍스트 */
+.blog-summary-instruction {
+    position: absolute;
+    font-size: 18px;
+    color: #878787;
+    left: 96px;
+    top: 19px;
+    margin: 0;
+}
+
+/* 메뉴 아이콘 스타일 */
+.blog-summary-menu-icon {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    left: 348px;
+    top: 15px;
+    cursor: pointer;
+}
+
+/* 오류 메시지 */
+.keyword-error-message {
+    position: fixed; /* 화면에 고정 */
+    top: 0px;
+    left: 50%;
+    transform: translateX(-70%);
+    color: #FF3B30; 
+    padding: 0px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-family: 'Cafe24 Dongdong';
+    z-index: 1000;
+    margin: 0px;
+    white-space: nowrap;
+}
+
+/* 리뷰 요약 리스트 */
+.blog-summary-item {
+    display: flex;
+    border-bottom: 2px solid #674D42;
+    padding-bottom: 5px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 5px;
+    width: 360px;
+    box-sizing: border-box; 
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.blog-summary-item:first-child {
+    margin-top: 50px;
+}
+
+.blog-summary-item:last-child {
+    padding-bottom: 30px;
+    border-bottom: none;
+}
+
+.blog-summary-header {
+    display: flex;
+    margin-bottom: 5px;
+    width: 380px;
+}
+  
+.blog-summary-title {
+    font-size: 23px;
+    font-family: 'Cafe24 Dongdong';
+    margin-top: 15px;
+    font-weight: 500;
+    margin-right: 10px;
+    margin-left: 10px;
+    word-wrap: break-word;
+    width: 355px;
+    color: #000000;
+}
+  
+.blog-summary-content {
+    font-size: 20px;
+    font-family: 'Cafe24 Dongdong';
+    margin-top: 7px;
+    margin-bottom: 15px;
+    word-wrap: break-word;
+    width: 355px;
+    color: #878787;
+}
+
+.blog-summary-item:hover {
+    color: #674D42; 
+    text-decoration: underline; 
+}
+
+.blog-summary-item:hover .blog-summary-title,
+.blog-summary-item:hover .blog-summary-content {
+    color: #674D42; 
+}
