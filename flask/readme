@@ -1,2 +1,5 @@
 
 cloudtype의 서버에 올라간 주요 코드 및 파일
+
+model_generated_summaries_ver6.csv : chatgpt3.5를 활용하여 요약한 버젼
+blog_full_results.csv : Ko-BERT를 finetuning한 모델로 요약한 버젼
